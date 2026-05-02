@@ -1,0 +1,177 @@
+{
+  "book": {
+    "title": "Computer Architecture: A Quantitative Approach",
+    "authors": "John L. Hennessy & David A. Patterson",
+    "edition": "5th Edition (2012)",
+    "publisher": "Morgan Kaufmann / Elsevier",
+    "isbn": "978-0-12-383872-8",
+    "pages": 857,
+    "abbreviation": "CAAQA"
+  },
+  "chapters": [
+    {
+      "id": "ch1",
+      "number": 1,
+      "title": "Fundamentals of Quantitative Design and Analysis",
+      "summary": "Performance equations, Amdahl's Law, energy and power, integrated circuit costs, dependability, benchmarks. The toolkit you use to argue about design tradeoffs in every later chapter.",
+      "tags": ["fundamentals", "performance", "power", "amdahl", "spec"],
+      "interview_priority": 1,
+      "estimated_read_minutes": 90,
+      "key_concepts": [
+        "CPU performance equation",
+        "Amdahl's Law",
+        "Dynamic vs static power",
+        "Dependability (MTTF, MTTR, availability)",
+        "SPEC benchmarks",
+        "Cost vs price",
+        "Iron Law of Performance"
+      ]
+    },
+    {
+      "id": "ch2",
+      "number": 2,
+      "title": "Memory Hierarchy Design",
+      "summary": "Ten advanced cache optimizations, virtual memory, virtual machines, SRAM/DRAM/Flash technology. The most interview-frequent topic — you will be asked about caches.",
+      "tags": ["memory", "cache", "virtual-memory", "dram", "flash", "vm"],
+      "interview_priority": 1,
+      "estimated_read_minutes": 120,
+      "key_concepts": [
+        "Cache misses (3 Cs / 4 Cs)",
+        "10 advanced cache optimizations",
+        "Virtual memory & TLBs",
+        "Virtual machines",
+        "DRAM organization",
+        "Flash memory",
+        "Memory protection"
+      ]
+    },
+    {
+      "id": "ch3",
+      "number": 3,
+      "title": "Instruction-Level Parallelism and Its Exploitation",
+      "summary": "Branch prediction, dynamic scheduling (Tomasulo), speculation, multiple issue, multithreading. The deep-dive chapter for OoO superscalar concepts — pairs perfectly with Shen & Lipasti.",
+      "tags": ["ilp", "tomasulo", "branch-prediction", "speculation", "smt", "superscalar"],
+      "interview_priority": 1,
+      "estimated_read_minutes": 150,
+      "key_concepts": [
+        "Data dependences (RAW, WAR, WAW)",
+        "Tomasulo's algorithm",
+        "Reorder buffer (ROB)",
+        "Branch prediction (2-bit, correlating, tournament)",
+        "Hardware speculation",
+        "Multiple issue (superscalar, VLIW)",
+        "Simultaneous multithreading (SMT)",
+        "Limits of ILP"
+      ]
+    },
+    {
+      "id": "ch4",
+      "number": 4,
+      "title": "Data-Level Parallelism in Vector, SIMD, and GPU Architectures",
+      "summary": "Vector processors, SIMD instruction set extensions (SSE/AVX/NEON), GPU architecture (NVIDIA Fermi). The new chapter that demystifies GPUs using traditional architecture terminology.",
+      "tags": ["dlp", "simd", "gpu", "vector", "cuda", "roofline"],
+      "interview_priority": 2,
+      "estimated_read_minutes": 130,
+      "key_concepts": [
+        "Vector processors",
+        "Vector vs SIMD vs GPU",
+        "SIMD extensions (SSE, AVX, NEON)",
+        "GPU SIMT execution model",
+        "Warps, thread blocks, kernels",
+        "Roofline performance model",
+        "Memory coalescing"
+      ]
+    },
+    {
+      "id": "ch5",
+      "number": 5,
+      "title": "Thread-Level Parallelism",
+      "summary": "Multicore, symmetric (SMP) vs distributed shared memory, cache coherence (snooping & directory), synchronization primitives, memory consistency models.",
+      "tags": ["multicore", "tlp", "coherence", "consistency", "synchronization", "smp"],
+      "interview_priority": 1,
+      "estimated_read_minutes": 130,
+      "key_concepts": [
+        "Symmetric vs distributed shared memory",
+        "Cache coherence (MSI, MESI, MOESI)",
+        "Snooping vs directory protocols",
+        "Memory consistency models",
+        "Sequential consistency vs relaxed",
+        "Synchronization primitives (LL/SC, atomic ops)",
+        "False sharing"
+      ]
+    },
+    {
+      "id": "ch6",
+      "number": 6,
+      "title": "Warehouse-Scale Computers to Exploit Request-Level and Data-Level Parallelism",
+      "summary": "WSC architecture, MapReduce, cloud computing economics, networking, power, real Google datacenter walkthrough. New for the 5th edition.",
+      "tags": ["wsc", "cloud", "mapreduce", "datacenter", "rlp"],
+      "interview_priority": 3,
+      "estimated_read_minutes": 100,
+      "key_concepts": [
+        "Warehouse-Scale Computer (WSC)",
+        "MapReduce programming model",
+        "Cloud vs traditional datacenter",
+        "Programming models for WSC",
+        "PUE (Power Usage Effectiveness)",
+        "Cost of WSCs",
+        "Google WSC case study"
+      ]
+    },
+    {
+      "id": "appA",
+      "number": 7,
+      "title": "Appendix A: Instruction Set Principles",
+      "summary": "ISA classification, addressing modes, operand encoding, MIPS64. The reference for any RISC vs CISC question.",
+      "tags": ["isa", "mips", "risc", "addressing"],
+      "interview_priority": 2,
+      "estimated_read_minutes": 70,
+      "key_concepts": [
+        "ISA classification (stack, accumulator, register)",
+        "Addressing modes",
+        "Operand encoding",
+        "RISC design principles",
+        "MIPS64 ISA"
+      ]
+    },
+    {
+      "id": "appB",
+      "number": 8,
+      "title": "Appendix B: Review of Memory Hierarchy",
+      "summary": "Cache fundamentals tutorial — the basics before Chapter 2's advanced material. Read first if caches feel rusty.",
+      "tags": ["cache", "memory", "review"],
+      "interview_priority": 2,
+      "estimated_read_minutes": 80,
+      "key_concepts": [
+        "Cache organization (direct, set-associative, fully-associative)",
+        "Block placement, identification, replacement",
+        "Write policies (write-through, write-back)",
+        "Cache performance equations",
+        "Virtual memory basics"
+      ]
+    },
+    {
+      "id": "appC",
+      "number": 9,
+      "title": "Appendix C: Pipelining: Basic and Intermediate Concepts",
+      "summary": "5-stage MIPS pipeline, hazards (structural, data, control), forwarding, branches, multicycle operations. Foundation for Chapter 3.",
+      "tags": ["pipelining", "mips", "hazards", "forwarding", "review"],
+      "interview_priority": 1,
+      "estimated_read_minutes": 100,
+      "key_concepts": [
+        "5-stage MIPS pipeline (IF, ID, EX, MEM, WB)",
+        "Structural, data, control hazards",
+        "Forwarding (bypassing)",
+        "Branch handling",
+        "Multicycle operations",
+        "MIPS R4000 deep pipeline",
+        "Precise vs imprecise exceptions"
+      ]
+    }
+  ],
+  "study_paths": {
+    "interview_one_week": ["appC", "ch3", "appB", "ch2", "ch5", "ch1"],
+    "graduate_course": ["ch1", "appC", "appB", "ch2", "ch3", "ch4", "ch5", "ch6"],
+    "phd_prep": ["ch1", "ch3", "ch5", "ch6", "ch4", "ch2"]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "flashcards": [
+    {"id": "fc-1", "chapter": "ch1", "front": "Amdahl's Law", "back": "Speedup = 1 / ((1-F) + F/S). Overall speedup is limited by the unaffected fraction (1-F)."},
+    {"id": "fc-2", "chapter": "ch1", "front": "Iron Law of Performance", "back": "CPU time = Instruction Count × CPI × Clock Cycle Time. The three knobs every architecture decision turns."},
+    {"id": "fc-3", "chapter": "ch1", "front": "Dynamic Power", "back": "P = ½ × C × V² × f × α. Burned charging/discharging gate capacitance during switching."},
+    {"id": "fc-4", "chapter": "ch1", "front": "Static Power", "back": "Leakage current that flows even when not switching. Dominant problem at sub-22nm nodes."},
+    {"id": "fc-5", "chapter": "ch1", "front": "MTTF / MTTR / Availability", "back": "Availability = MTTF / (MTTF + MTTR). Five nines = 99.999% = ~5 min downtime/year."},
+    {"id": "fc-6", "chapter": "ch1", "front": "Why geometric mean for SPEC?", "back": "It's invariant to the choice of normalization reference machine; arithmetic mean is not."},
+
+    {"id": "fc-7", "chapter": "ch2", "front": "3 Cs of cache misses", "back": "Compulsory (first access), Capacity (working set > cache), Conflict (set associativity insufficient)."},
+    {"id": "fc-8", "chapter": "ch2", "front": "4th C of cache misses", "back": "Coherence — invalidations from other cores in a multicore system."},
+    {"id": "fc-9", "chapter": "ch2", "front": "AMAT", "back": "Average Memory Access Time = Hit_time + Miss_rate × Miss_penalty. Recurses for multi-level caches."},
+    {"id": "fc-10", "chapter": "ch2", "front": "Write-back vs write-through", "back": "Write-back: update cache, mark dirty, write to memory on eviction. Write-through: every write goes to memory."},
+    {"id": "fc-11", "chapter": "ch2", "front": "Non-blocking cache", "back": "Cache that services hits while a miss is outstanding (hit-under-miss, miss-under-miss). Required for OoO."},
+    {"id": "fc-12", "chapter": "ch2", "front": "TLB", "back": "Translation Lookaside Buffer — small cache of virtual→physical page mappings. Miss = page walk; fault = OS swap-in."},
+    {"id": "fc-13", "chapter": "ch2", "front": "EPT / NPT", "back": "Extended/Nested Page Tables — hardware support for 2-level translation in VMs (guest virt → guest phys → host phys)."},
+
+    {"id": "fc-14", "chapter": "ch3", "front": "RAW dependence", "back": "Read After Write — a true (flow) dependence. Cannot be removed by renaming."},
+    {"id": "fc-15", "chapter": "ch3", "front": "WAR dependence", "back": "Write After Read — anti-dependence. Removed by register renaming."},
+    {"id": "fc-16", "chapter": "ch3", "front": "WAW dependence", "back": "Write After Write — output dependence. Removed by register renaming."},
+    {"id": "fc-17", "chapter": "ch3", "front": "Tomasulo's algorithm", "back": "OoO with reservation stations + CDB + register status table. Handles RAW; eliminates WAR/WAW via implicit renaming."},
+    {"id": "fc-18", "chapter": "ch3", "front": "Reorder Buffer (ROB)", "back": "FIFO that holds in-flight instructions in program order. Enables precise exceptions and speculation rollback."},
+    {"id": "fc-19", "chapter": "ch3", "front": "2-bit branch predictor", "back": "Saturating counter (00=strongly NT, 01=weakly NT, 10=weakly T, 11=strongly T). Must mispredict twice to flip."},
+    {"id": "fc-20", "chapter": "ch3", "front": "Tournament predictor", "back": "Combines a local and global predictor with a meta-predictor that picks per-branch which to trust."},
+    {"id": "fc-21", "chapter": "ch3", "front": "SMT", "back": "Simultaneous Multithreading — multiple threads issue in same cycle, sharing FUs/ROB. ~5% area for ~30% throughput."},
+    {"id": "fc-22", "chapter": "ch3", "front": "Limits of ILP (typical)", "back": "Realistic integer ILP ~4-6, FP ~6-12. Branch prediction and memory aliasing are the gating factors."},
+
+    {"id": "fc-23", "chapter": "ch4", "front": "DLP", "back": "Data-Level Parallelism — same operation on many data elements. Exploited by vector, SIMD, GPU."},
+    {"id": "fc-24", "chapter": "ch4", "front": "Roofline model", "back": "Performance ceiling = min(peak_compute, bandwidth × operational_intensity). Diagnoses compute vs memory bound."},
+    {"id": "fc-25", "chapter": "ch4", "front": "SIMT", "back": "Single Instruction Multiple Thread — NVIDIA's GPU model. Threads grouped into 32-thread warps run in lockstep."},
+    {"id": "fc-26", "chapter": "ch4", "front": "Warp divergence", "back": "Threads in a warp take different branches → hardware serializes both paths with masking. Halves throughput."},
+    {"id": "fc-27", "chapter": "ch4", "front": "Memory coalescing", "back": "GPU hardware combines aligned/contiguous accesses from a warp into fewer memory transactions. Critical for bandwidth."},
+
+    {"id": "fc-28", "chapter": "ch5", "front": "MESI", "back": "Modified, Exclusive, Shared, Invalid. Cache coherence protocol. E enables silent E→M (no broadcast on first write)."},
+    {"id": "fc-29", "chapter": "ch5", "front": "MOESI vs MESI", "back": "MOESI adds Owned state — one cache supplies data on snoop without writing back to memory."},
+    {"id": "fc-30", "chapter": "ch5", "front": "Snooping vs directory", "back": "Snooping: O(N²) broadcast traffic, simple, ~16-32 cores max. Directory: point-to-point, scales to 100s+ cores."},
+    {"id": "fc-31", "chapter": "ch5", "front": "Sequential consistency", "back": "All processors see operations in some total order; each processor's order matches program order. Strict, expensive."},
+    {"id": "fc-32", "chapter": "ch5", "front": "TSO (x86)", "back": "Total Store Order — only allows store→load reordering (load can pass earlier store to different address)."},
+    {"id": "fc-33", "chapter": "ch5", "front": "Weak memory model (ARM)", "back": "Most reorderings allowed; programmer inserts DMB/DSB barriers for ordering. Acquire/release semantics."},
+    {"id": "fc-34", "chapter": "ch5", "front": "False sharing", "back": "Two cores write different bytes on same cache line, causing line to ping-pong. Fix: align/pad to cache line."},
+
+    {"id": "fc-35", "chapter": "ch6", "front": "WSC", "back": "Warehouse-Scale Computer — homogeneous, single-owner, single-admin facility designed as one machine. Failure is routine."},
+    {"id": "fc-36", "chapter": "ch6", "front": "MapReduce", "back": "Map(k,v)→list((k',v')); Reduce(k', list(v'))→output. Locality-aware, failure-tolerant batch model."},
+    {"id": "fc-37", "chapter": "ch6", "front": "PUE", "back": "Power Usage Effectiveness = total facility power / IT equipment power. Modern WSC: ~1.1 (Google), enterprise: ~2.0."},
+
+    {"id": "fc-38", "chapter": "appA", "front": "RISC vs CISC", "back": "RISC: fixed-length, load-store, simple. CISC: variable-length, mem operands, complex insts. Modern x86 = CISC frontend, RISC backend."},
+    {"id": "fc-39", "chapter": "appB", "front": "Direct-mapped vs set-associative", "back": "DM: 1 line per index. SA: n lines per set (parallel tag compare). FA: any line. Tradeoff: hit time vs miss rate."},
+    {"id": "fc-40", "chapter": "appC", "front": "5-stage MIPS pipeline", "back": "IF, ID, EX, MEM, WB. Throughput 1 IPC steady-state, latency 5 cycles."},
+    {"id": "fc-41", "chapter": "appC", "front": "Load-use hazard", "back": "Dependent instruction needs load result that isn't available until end of MEM. Requires 1 stall cycle (or compiler scheduling)."},
+    {"id": "fc-42", "chapter": "appC", "front": "Precise exceptions", "back": "On exception, all earlier insts complete, no later inst has effect. Required for VM, debugging. ROB enables in OoO."}
+  ]
+}

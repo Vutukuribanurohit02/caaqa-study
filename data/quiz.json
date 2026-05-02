@@ -1,0 +1,199 @@
+{
+  "quiz": [
+    {
+      "id": "qz-1", "chapter": "ch1",
+      "q": "If a program spends 30% of its time in a function and that function is sped up by 4×, what is the overall speedup?",
+      "choices": ["1.18×", "1.29×", "1.40×", "4.00×"],
+      "correct": 1,
+      "explain": "Amdahl's Law: Speedup = 1 / ((1-F) + F/S) = 1 / (0.7 + 0.3/4) = 1 / 0.775 ≈ 1.29×. The unaffected 70% of the program caps speedup well below the 4× of the optimized part."
+    },
+    {
+      "id": "qz-2", "chapter": "ch1",
+      "q": "Which power component scales with V² × f?",
+      "choices": ["Static (leakage) power", "Short-circuit power", "Dynamic switching power", "Total power"],
+      "correct": 2,
+      "explain": "Dynamic power = ½ × C × V² × f × α. Static power scales with V exponentially via leakage but not with frequency. This is why DVFS lowers V together with f for a cubic effect."
+    },
+    {
+      "id": "qz-3", "chapter": "ch1",
+      "q": "Why is geometric mean preferred over arithmetic mean for SPEC scores?",
+      "choices": ["It's always larger", "It's invariant to the reference machine choice", "It weights large values less", "It's required by IEEE 754"],
+      "correct": 1,
+      "explain": "Geometric mean of normalized speedups doesn't change if you renormalize against a different reference machine. Arithmetic mean would change."
+    },
+    {
+      "id": "qz-4", "chapter": "ch2",
+      "q": "Which cache miss type is most affected by going from a 32 KB to a 256 KB cache, holding everything else constant?",
+      "choices": ["Compulsory", "Capacity", "Conflict", "Coherence"],
+      "correct": 1,
+      "explain": "Larger cache directly reduces capacity misses. Compulsory misses are unaffected. Conflict misses depend on associativity. Coherence misses depend on multicore behavior."
+    },
+    {
+      "id": "qz-5", "chapter": "ch2",
+      "q": "A non-blocking cache enables which capability that's essential for OoO processors?",
+      "choices": ["Lower hit time", "Hit-under-miss and miss-under-miss", "Larger block size", "Write-through with no buffer"],
+      "correct": 1,
+      "explain": "Non-blocking means the cache can service hits while a miss is pending, and even handle multiple outstanding misses. Without this, every cache miss stalls the entire pipeline — fatal for OoO."
+    },
+    {
+      "id": "qz-6", "chapter": "ch2",
+      "q": "On a TLB miss but not a page fault, what happens?",
+      "choices": ["OS swaps a page from disk", "Hardware or software walks the page tables", "The instruction is squashed", "The CPU triple-faults"],
+      "correct": 1,
+      "explain": "TLB miss = translation not cached but page IS resident; resolved in microseconds via page-table walk. Page fault = page not in memory; resolved in milliseconds via OS handler + disk."
+    },
+    {
+      "id": "qz-7", "chapter": "ch3",
+      "q": "Which dependence is removed by register renaming?",
+      "choices": ["RAW only", "WAR only", "WAR and WAW", "All three (RAW, WAR, WAW)"],
+      "correct": 2,
+      "explain": "WAR and WAW are 'name dependences' — they exist only because the architectural register namespace is reused. Renaming gives each writer a fresh physical register. RAW is a true data dependence and cannot be eliminated."
+    },
+    {
+      "id": "qz-8", "chapter": "ch3",
+      "q": "What does the Common Data Bus (CDB) in Tomasulo's algorithm do?",
+      "choices": [
+        "Connects the cache to main memory",
+        "Broadcasts a completed result + tag to all reservation stations and registers waiting on it",
+        "Carries branch predictions to the fetch unit",
+        "Forwards values between adjacent pipeline stages"
+      ],
+      "correct": 1,
+      "explain": "The CDB is the broadcast mechanism: when a functional unit completes, it puts (tag, value) on the CDB; everyone waiting for that tag captures the value in the same cycle. The CDB's bandwidth is often a limiting factor in wide OoO machines."
+    },
+    {
+      "id": "qz-9", "chapter": "ch3",
+      "q": "What is the main job of the Reorder Buffer (ROB)?",
+      "choices": [
+        "Reorder memory accesses for better DRAM efficiency",
+        "Hold instructions in program order until commit, enabling precise exceptions",
+        "Predict branch directions",
+        "Cache recently decoded instructions"
+      ],
+      "correct": 1,
+      "explain": "The ROB lets execution be out-of-order while commit (architectural state update) is in-order. On exception, flush ROB past the faulting instruction; architectural state remains precise."
+    },
+    {
+      "id": "qz-10", "chapter": "ch3",
+      "q": "Why does branch prediction accuracy matter more in modern wide superscalar processors?",
+      "choices": [
+        "Modern compilers can't optimize branches anymore",
+        "Branches are slower instructions",
+        "Misprediction penalty grows with pipeline depth × issue width",
+        "Modern ISAs require it"
+      ],
+      "correct": 2,
+      "explain": "A 20-stage pipeline issuing 4 wide loses 80 instructions of work per misprediction. At 95% accuracy that's painful; at 90% it's catastrophic. This is why TAGE/perceptron predictors hit 97%+."
+    },
+    {
+      "id": "qz-11", "chapter": "ch4",
+      "q": "A kernel has operational intensity of 0.25 FLOPs/byte. The machine offers 100 GFLOPS peak compute and 50 GB/s memory bandwidth. What limits the kernel's performance?",
+      "choices": ["Compute", "Memory bandwidth", "Both equally", "Neither — it runs at 100 GFLOPS"],
+      "correct": 1,
+      "explain": "Roofline: bandwidth-limited performance = 50 GB/s × 0.25 FLOP/byte = 12.5 GFLOPS. That's far below the 100 GFLOPS compute roof, so memory bandwidth limits this kernel."
+    },
+    {
+      "id": "qz-12", "chapter": "ch4",
+      "q": "What happens on a warp divergence in NVIDIA's SIMT model?",
+      "choices": [
+        "The compiler generates an error",
+        "Hardware serializes both paths, masking inactive lanes",
+        "The GPU stalls until all threads converge",
+        "Threads execute on different SMs"
+      ],
+      "correct": 1,
+      "explain": "On divergence, the warp executes path A with matching lanes active, then path B with the inverse mask. Half the lanes idle in each phase, halving throughput. Newer architectures have independent thread scheduling that eases this."
+    },
+    {
+      "id": "qz-13", "chapter": "ch5",
+      "q": "Which MESI state allows a silent transition to Modified (M) without coherence broadcast?",
+      "choices": ["Shared (S)", "Exclusive (E)", "Invalid (I)", "Modified (M)"],
+      "correct": 1,
+      "explain": "From E, only this cache has the line, so writing it doesn't require invalidating anyone else — the cache silently transitions E→M. From S, the cache must broadcast Invalidate first."
+    },
+    {
+      "id": "qz-14", "chapter": "ch5",
+      "q": "Which is true of x86's TSO memory model?",
+      "choices": [
+        "All operations appear in program order",
+        "Stores can be reordered after later loads to different addresses",
+        "ARM is stricter than x86",
+        "It requires explicit fences for all multi-thread code"
+      ],
+      "correct": 1,
+      "explain": "TSO allows a load to pass an earlier store (to a different address). This is observable in Dekker-style algorithms. ARM is weaker (more reorderings allowed), not stricter."
+    },
+    {
+      "id": "qz-15", "chapter": "ch5",
+      "q": "Two threads each increment their own counter, but performance is much worse than expected. What is the most likely cause?",
+      "choices": [
+        "Branch misprediction",
+        "TLB thrashing",
+        "False sharing — counters on the same cache line",
+        "Lock contention"
+      ],
+      "correct": 2,
+      "explain": "Classic false sharing: two counters in the same 64-byte line ping-pong via the coherence protocol. Fix with cache-line padding or thread-local storage."
+    },
+    {
+      "id": "qz-16", "chapter": "ch6",
+      "q": "Which statement best captures the WSC design philosophy?",
+      "choices": [
+        "Maximize per-server reliability with redundant components inside each server",
+        "Treat failure as routine and tolerate it in software",
+        "Use only the highest-end CPUs",
+        "Avoid replication to save cost"
+      ],
+      "correct": 1,
+      "explain": "WSCs use commodity hardware and assume failures are constant; the software (frameworks, schedulers, replication) handles them. This is a fundamental shift from enterprise 'each server matters' design."
+    },
+    {
+      "id": "qz-17", "chapter": "appA",
+      "q": "Modern x86 cores translate CISC instructions into what?",
+      "choices": [
+        "ARM instructions",
+        "Internal RISC-like micro-ops executed by an OoO backend",
+        "Java bytecode",
+        "VLIW bundles"
+      ],
+      "correct": 1,
+      "explain": "x86 decode cracks complex instructions into simpler micro-ops (μops) — effectively a RISC-style backend underneath the CISC frontend. The CISC ISA acts as instruction compression."
+    },
+    {
+      "id": "qz-18", "chapter": "appB",
+      "q": "Compared to direct-mapped, an 8-way set-associative cache typically has:",
+      "choices": [
+        "Higher hit time, lower miss rate",
+        "Lower hit time, higher miss rate",
+        "Identical performance",
+        "Lower hit time and lower miss rate"
+      ],
+      "correct": 0,
+      "explain": "Set-associative needs n parallel tag comparators, increasing hit time slightly, but eliminates most conflict misses, lowering miss rate. The tradeoff is favorable for L1/L2; way prediction can recover some hit time."
+    },
+    {
+      "id": "qz-19", "chapter": "appC",
+      "q": "In the standard 5-stage MIPS pipeline with full forwarding, which instruction sequence still requires a stall?",
+      "choices": [
+        "ADD R1, R2, R3 followed by SUB R4, R1, R5",
+        "LW R1, 0(R2) followed by ADD R3, R1, R4",
+        "AND R1, R2, R3 followed by OR R4, R1, R5",
+        "All three require stalls"
+      ],
+      "correct": 1,
+      "explain": "Load-use hazard: LW's result is ready end of MEM, but the dependent ADD needs it at start of EX one cycle earlier. Forwarding can't bend time — a 1-cycle stall (or compiler-scheduled independent instruction) is required."
+    },
+    {
+      "id": "qz-20", "chapter": "appC",
+      "q": "Why are precise exceptions important?",
+      "choices": [
+        "They make floating-point math faster",
+        "Required for restartable page faults, debugging, and predictable OS behavior",
+        "Required by IEEE 754",
+        "They reduce branch misprediction penalty"
+      ],
+      "correct": 1,
+      "explain": "Without precise exceptions, you can't restart a page fault cleanly (architectural state past the fault may be inconsistent), can't single-step a debugger, and can't trap-and-emulate. ROB-based commit enables precise exceptions in OoO cores."
+    }
+  ]
+}
