@@ -499,6 +499,210 @@ body {
 .qa-difficulty.core { background: var(--green-bg); color: var(--green); }
 .qa-difficulty.advanced { background: var(--accent-bg); color: var(--accent); }
 
+/* ============= COMPANY CHIPS & COMPANIES VIEW ============= */
+.qa-companies {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--rule-soft);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.qa-companies-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-right: 4px;
+}
+.company-chip {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: 11px;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+}
+.company-chip:hover {
+  background: var(--accent);
+  color: var(--cream);
+  border-color: var(--accent);
+}
+
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+.company-card {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 22px;
+  background: var(--paper);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.company-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+}
+.company-card-tier {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-bottom: 8px;
+}
+.company-card-tier.tier-1 { color: var(--accent); }
+.company-card-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0 0 10px 0;
+}
+.company-card-brief {
+  font-size: 13px;
+  color: var(--ink-mute);
+  line-height: 1.55;
+  margin: 0 0 14px 0;
+}
+.company-card-meta {
+  display: flex;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-soft);
+}
+.company-tier-section {
+  margin-bottom: 36px;
+}
+.company-tier-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin: 0 0 8px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+/* Single-company detail view */
+.company-detail-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--rule);
+}
+.company-detail-tier {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.company-detail-name {
+  font-family: var(--serif);
+  font-size: 48px;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0 0 16px 0;
+  line-height: 1.1;
+}
+.company-detail-brief {
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  max-width: 720px;
+  margin: 0 0 20px 0;
+}
+.company-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  cursor: pointer;
+  margin-bottom: 16px;
+  border: none;
+  background: none;
+  padding: 0;
+}
+.company-back:hover { color: var(--accent); }
+.company-section {
+  margin-bottom: 32px;
+}
+.company-section h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  color: var(--ink);
+  margin: 0 0 12px 0;
+}
+.company-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.company-list li {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  padding: 4px 0 4px 18px;
+  position: relative;
+}
+.company-list li::before {
+  content: "·";
+  position: absolute;
+  left: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.reading-list-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--rule-soft);
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--paper);
+}
+.reading-list-item:hover {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+.reading-list-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-mute);
+  min-width: 28px;
+  letter-spacing: 0.05em;
+}
+.reading-list-q {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
 /* ============= FLASHCARDS ============= */
 .flashcard-stage {
   display: flex;
@@ -866,6 +1070,7 @@ mark { background: var(--accent-bg); color: var(--accent); padding: 1px 3px; bor
 
     <div class="mode-tabs">
       <button class="mode-tab active" data-mode="chapters">Chapters</button>
+      <button class="mode-tab" data-mode="companies">Companies</button>
       <button class="mode-tab" data-mode="flashcards">Cards</button>
       <button class="mode-tab" data-mode="quiz">Quiz</button>
       <button class="mode-tab" data-mode="dashboard">Progress</button>
@@ -892,35 +1097,40 @@ mark { background: var(--accent-bg); color: var(--accent); padding: 1px 3px; bor
     <!-- HOME / OVERVIEW -->
     <section id="view-home" class="view">
       <div class="hero">
-        <div class="hero-eyebrow">Interview Study Companion · v2</div>
+        <div class="hero-eyebrow">Interview Study Companion · v3</div>
         <h1 class="hero-title">A quantitative approach to landing<br>your hardware interview.</h1>
-        <p class="hero-sub">Nine chapters of Hennessy &amp; Patterson distilled into searchable Q&amp;A, spaced-repetition flashcards, and timed quizzes — built for ASIC, RTL, verification, and SoC roles.</p>
+        <p class="hero-sub">Nine chapters of Hennessy &amp; Patterson distilled into searchable Q&amp;A, spaced-repetition flashcards, timed quizzes, and <strong>company-specific prep tracks</strong> for Apple, NVIDIA, AMD, Qualcomm, Intel and more — built for ASIC, RTL, verification, and SoC roles.</p>
 
         <div class="hero-stats">
-          <div><div class="stat-num" id="statChapters">9</div><div class="stat-label">Chapters</div></div>
-          <div><div class="stat-num" id="statQA">31</div><div class="stat-label">Interview Q&amp;A</div></div>
-          <div><div class="stat-num" id="statCards">42</div><div class="stat-label">Flashcards</div></div>
-          <div><div class="stat-num" id="statQuiz">20</div><div class="stat-label">Quiz Items</div></div>
+          <div><div class="stat-num" id="statChapters">—</div><div class="stat-label">Chapters</div></div>
+          <div><div class="stat-num" id="statQA">—</div><div class="stat-label">Interview Q&amp;A</div></div>
+          <div><div class="stat-num" id="statCards">—</div><div class="stat-label">Flashcards</div></div>
+          <div><div class="stat-num" id="statQuiz">—</div><div class="stat-label">Quiz Items</div></div>
+          <div><div class="stat-num" id="statCompanies">—</div><div class="stat-label">Company Tracks</div></div>
         </div>
       </div>
 
       <div class="section-divider"><span>How to use this guide</span></div>
 
       <p style="font-size: 16px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 16px;">
-        Pick a chapter from the sidebar to read its summary, key concepts, and full interview Q&amp;A — every answer is written the way you would actually speak it in a panel. Use the <strong>Cards</strong> tab for spaced-repetition review on the bus or between meetings. Use <strong>Quiz</strong> to test yourself on tricky multiple-choice items with explanations. The <strong>Search</strong> bar at the top of the sidebar finds anything across all chapters in real time.
+        Pick a chapter from the sidebar to read its summary, key concepts, and full interview Q&amp;A — every answer is written the way you would actually speak it in a panel. Each Q&amp;A is tagged with the companies that tend to drill on it. Use the <strong>Companies</strong> tab to follow a curated reading order tailored to your target — e.g., Apple SoC DV, NVIDIA ASIC DV, AMD RTL Design. Use the <strong>Cards</strong> tab for spaced-repetition review on the bus or between meetings. Use <strong>Quiz</strong> to test yourself on tricky multiple-choice items with explanations. The <strong>Search</strong> bar at the top of the sidebar finds anything across all chapters and company tracks in real time.
       </p>
 
       <p style="font-size: 16px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 16px;">
         Priority dots tell you what to study first: <span class="priority-dot priority-1" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);"></span> red is high-frequency interview territory, <span class="priority-dot priority-2" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--gold);"></span> gold is supporting material, <span class="priority-dot priority-3" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ink-mute);"></span> grey is depth-of-knowledge.
       </p>
 
-      <div class="section-divider"><span>One-week interview prep order</span></div>
-      <p style="font-size: 16px; line-height: 1.7; color: var(--ink-soft);">
+      <div class="section-divider"><span>Two ways to study</span></div>
+      <p style="font-size: 16px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 16px;">
+        <strong>Generalist track (one-week interview prep order):</strong><br>
         <strong>Day 1–2:</strong> Appendix C (pipelining) → Chapter 3 (ILP). The OoO foundations that anchor every digital design interview.<br>
         <strong>Day 3:</strong> Appendix B → Chapter 2 (memory hierarchy). Caches are the most-asked topic, period.<br>
         <strong>Day 4:</strong> Chapter 5 (multicore, coherence, consistency). Increasingly common in modern interviews.<br>
         <strong>Day 5:</strong> Chapter 1 (performance, power, Amdahl). The framework you cite when explaining design choices.<br>
         <strong>Day 6–7:</strong> Chapters 4 (DLP/GPU) and 6 (WSC) for breadth. Quiz mode + flashcards on weak areas.
+      </p>
+      <p style="font-size: 16px; line-height: 1.7; color: var(--ink-soft);">
+        <strong>Company-focused track:</strong> Click <strong>Companies</strong> in the sidebar, pick your target (Apple / NVIDIA / AMD / Qualcomm / Intel / others), and read its curated 12–22 Q&amp;A list in order. Each company also lists its interview style notes, focus areas, and roles typically targeted.
       </p>
     </section>
 
@@ -973,6 +1183,11 @@ mark { background: var(--accent-bg); color: var(--accent); padding: 1px 3px; bor
       <div id="dashContent"></div>
     </section>
 
+    <!-- COMPANIES -->
+    <section id="view-companies" class="view hidden">
+      <div id="companiesContent"></div>
+    </section>
+
     <!-- SEARCH RESULTS -->
     <section id="view-search" class="view hidden">
       <div style="margin-bottom: 24px;">
@@ -991,14 +1206,16 @@ mark { background: var(--accent-bg); color: var(--accent); padding: 1px 3px; bor
 // an API call is a one-line change if a backend is ever added.
 // ============================================================
 
-const DATA_FILES = ['chapters', 'qa', 'flashcards', 'quiz'];
+const DATA_FILES = ['chapters', 'qa', 'flashcards', 'quiz', 'companies'];
 const STATE = {
   chapters: null,
   qa: null,
   flashcards: null,
   quiz: null,
+  companies: null,
   currentMode: 'chapters',
   currentChapter: null,
+  currentCompany: null,
   // Persistent state from localStorage
   flashcardProgress: {}, // { cardId: 'mastered' | 'review' }
   flashcardIndex: 0,
@@ -1009,7 +1226,7 @@ const STATE = {
   bookmarks: new Set(), // qa item IDs
 };
 
-const STORAGE_KEY = 'caaqa_v2_state';
+const STORAGE_KEY = 'caaqa_v3_state';
 
 function loadStorage() {
   try {
@@ -1054,6 +1271,14 @@ async function loadData() {
       STATE[key] = null;
     }
   });
+
+  // Hero stats — driven by data, not hardcoded
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  if (STATE.chapters) set('statChapters', STATE.chapters.chapters.length);
+  if (STATE.qa) set('statQA', Object.values(STATE.qa.qa).reduce((s, a) => s + a.length, 0));
+  if (STATE.flashcards) set('statCards', STATE.flashcards.flashcards.length);
+  if (STATE.quiz) set('statQuiz', STATE.quiz.quiz.length);
+  if (STATE.companies) set('statCompanies', STATE.companies.companies.length);
 }
 
 // ============================================================
@@ -1105,6 +1330,9 @@ function setMode(mode) {
   if (mode === 'chapters') {
     if (STATE.currentChapter) showChapter(STATE.currentChapter);
     else document.getElementById('view-home').classList.remove('hidden');
+  } else if (mode === 'companies') {
+    document.getElementById('view-companies').classList.remove('hidden');
+    renderCompaniesIndex();
   } else if (mode === 'flashcards') {
     document.getElementById('view-flashcards').classList.remove('hidden');
     initFlashcards();
@@ -1178,6 +1406,15 @@ function showChapter(chapterId) {
                   <span class="qa-difficulty ${qa.difficulty}">${qa.difficulty}</span>
                   ${qa.tags.map(t => `<span class="qa-tag">${t}</span>`).join('')}
                 </div>
+                ${qa.companies && qa.companies.length ? `
+                  <div class="qa-companies">
+                    <span class="qa-companies-label">Asked at:</span>
+                    ${qa.companies.map(cid => {
+                      const c = STATE.companies && STATE.companies.companies.find(co => co.id === cid);
+                      return c ? `<span class="company-chip" data-company="${cid}" title="View ${c.name} prep track">${c.name}</span>` : '';
+                    }).join('')}
+                  </div>
+                ` : ''}
               </div>
             </div>
           </div>
@@ -1191,12 +1428,148 @@ function showChapter(chapterId) {
       item.classList.toggle('open');
     });
   });
+  document.querySelectorAll('.company-chip').forEach(chip => {
+    chip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showCompany(chip.dataset.company);
+    });
+  });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ============================================================
+// COMPANIES — index of all companies grouped by tier, plus detail view
+// ============================================================
+function renderCompaniesIndex() {
+  if (!STATE.companies) return;
+  const companies = STATE.companies.companies;
+  const byTier = { 1: [], 2: [], 3: [] };
+  companies.forEach(c => byTier[c.tier].push(c));
+
+  const tierLabels = {
+    1: 'Tier 1 — Top Targets (deep tracks)',
+    2: 'Tier 2 — Focused Tracks',
+    3: 'Tier 3 — Services & EDA'
+  };
+
+  const html = `
+    <div class="hero" style="margin-bottom: 24px; padding-bottom: 20px;">
+      <div class="hero-eyebrow">Company-Specific Prep</div>
+      <h2 class="hero-title" style="font-size: 36px;">Pick a target. Follow the track.</h2>
+      <p class="hero-sub" style="font-size: 16px; max-width: 680px;">
+        Each company below has a curated reading list of the Q&A items it tends to drill on, plus interview style notes and focus areas. Tap a card to see the full track.
+      </p>
+    </div>
+    ${[1,2,3].map(t => `
+      <div class="company-tier-section">
+        <div class="company-tier-title">${tierLabels[t]}</div>
+        <div class="company-grid">
+          ${byTier[t].map(c => `
+            <div class="company-card" data-company="${c.id}">
+              <div class="company-card-tier ${'tier-' + c.tier}">Tier ${c.tier}</div>
+              <h3 class="company-card-name">${c.name}</h3>
+              <p class="company-card-brief">${c.brief.split('.')[0]}.</p>
+              <div class="company-card-meta">
+                <span>${c.reading_list.length} Q&amp;A</span>
+                <span>${c.focus_areas.length} focus areas</span>
+                <span>${c.roles_targeted.length} roles</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('')}
+  `;
+  document.getElementById('companiesContent').innerHTML = html;
+  document.querySelectorAll('.company-card').forEach(card => {
+    card.addEventListener('click', () => showCompany(card.dataset.company));
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showCompany(companyId) {
+  if (!STATE.companies) return;
+  const c = STATE.companies.companies.find(co => co.id === companyId);
+  if (!c) return;
+  STATE.currentCompany = companyId;
+  STATE.currentMode = 'companies';
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === 'companies');
+  });
+  document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+  document.getElementById('view-companies').classList.remove('hidden');
+  document.getElementById('chapterNav').style.display = 'none';
+
+  // Look up reading-list Q&A items by ID
+  const allQa = [];
+  Object.values(STATE.qa.qa).forEach(arr => arr.forEach(q => allQa.push(q)));
+  const qaById = Object.fromEntries(allQa.map(q => [q.id, q]));
+  const readingList = c.reading_list.map(id => qaById[id]).filter(Boolean);
+
+  const html = `
+    <button class="company-back" id="companyBack">← All Companies</button>
+    <div class="company-detail-header">
+      <div class="company-detail-tier">Tier ${c.tier} · ${c.name}</div>
+      <h1 class="company-detail-name">${c.name}</h1>
+      <p class="company-detail-brief">${c.brief}</p>
+    </div>
+
+    <div class="company-section">
+      <h3>Interview Style</h3>
+      <p style="font-size: 14px; color: var(--ink-soft); line-height: 1.7; max-width: 720px;">${c.interview_style}</p>
+    </div>
+
+    <div class="company-section">
+      <h3>Focus Areas</h3>
+      <ul class="company-list">
+        ${c.focus_areas.map(f => `<li>${f}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="company-section">
+      <h3>Roles Typically Targeted</h3>
+      <ul class="company-list">
+        ${c.roles_targeted.map(r => `<li>${r}</li>`).join('')}
+      </ul>
+    </div>
+
+    <div class="company-section">
+      <h3>Curated Reading List · ${readingList.length} Q&amp;A</h3>
+      <p style="font-size: 13px; color: var(--ink-mute); margin-bottom: 14px;">Read in this order. Tap any item to jump to that chapter and Q&amp;A.</p>
+      <div>
+        ${readingList.map((qa, i) => `
+          <div class="reading-list-item" data-qa-id="${qa.id}">
+            <div class="reading-list-num">${String(i+1).padStart(2,'0')}</div>
+            <div class="reading-list-q">${qa.q}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('companiesContent').innerHTML = html;
+  document.getElementById('companyBack').addEventListener('click', renderCompaniesIndex);
+  document.querySelectorAll('.reading-list-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const qaId = item.dataset.qaId;
+      // qaId is like "ch3-q5" — chapter is the prefix before the dash
+      const chId = qaId.split('-')[0];
+      showChapter(chId);
+      // After render, scroll to and open the Q&A
+      setTimeout(() => {
+        const target = document.querySelector(`.qa-item[data-qa-id="${qaId}"]`);
+        if (target) {
+          target.classList.add('open');
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 80);
+    });
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+// ============================================================
 // FLASHCARDS — Leitner-style spaced repetition (simplified)
-// Cards marked "review" come back sooner; "got it" cards retire faster.
 // ============================================================
 function initFlashcards() {
   if (!STATE.flashcards) return;
@@ -1398,7 +1771,7 @@ function renderDashboard() {
       <h3>Per-Chapter Stats</h3>
       <div style="margin-top: 14px;">
         ${STATE.chapters.chapters.map(ch => {
-          const chCards = STATE.flashcards.flashcards.filter(c => c.chapter === ch.id);
+          const chCards = STATE.flashcards.flashcards.filter(c => c.ch === ch.id);
           const chMastered = chCards.filter(c => STATE.flashcardProgress[c.id] === 'mastered').length;
           const pct = chCards.length ? Math.round((chMastered / chCards.length) * 100) : 0;
           return `
@@ -1464,16 +1837,31 @@ function performSearch(query) {
   // Search flashcards
   STATE.flashcards.flashcards.forEach(fc => {
     if ((fc.front + ' ' + fc.back).toLowerCase().includes(q)) {
-      const ch = STATE.chapters.chapters.find(c => c.id === fc.chapter);
+      const ch = STATE.chapters.chapters.find(c => c.id === fc.ch);
       results.push({
         type: 'Flashcard',
-        chapter: ch?.title || fc.chapter,
-        chapterId: fc.chapter,
+        chapter: ch?.title || fc.ch,
+        chapterId: fc.ch,
         title: fc.front,
         snippet: highlight(fc.back, q),
       });
     }
   });
+  // Search companies
+  if (STATE.companies) {
+    STATE.companies.companies.forEach(co => {
+      const haystack = (co.name + ' ' + co.brief + ' ' + co.interview_style + ' ' + co.focus_areas.join(' ') + ' ' + co.roles_targeted.join(' ')).toLowerCase();
+      if (haystack.includes(q)) {
+        results.push({
+          type: 'Company',
+          chapter: 'Company prep track',
+          chapterId: '__company_' + co.id,
+          title: co.name,
+          snippet: highlight(co.brief.slice(0, 220) + '…', q),
+        });
+      }
+    });
+  }
 
   const container = document.getElementById('searchResults');
   if (results.length === 0) {
@@ -1487,7 +1875,14 @@ function performSearch(query) {
       </div>
     `).join('');
     container.querySelectorAll('.search-result').forEach(el => {
-      el.addEventListener('click', () => showChapter(el.dataset.chapter));
+      el.addEventListener('click', () => {
+        const target = el.dataset.chapter;
+        if (target.startsWith('__company_')) {
+          showCompany(target.replace('__company_', ''));
+        } else {
+          showChapter(target);
+        }
+      });
     });
   }
 }

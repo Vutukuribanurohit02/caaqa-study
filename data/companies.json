@@ -1,0 +1,591 @@
+{
+  "companies": [
+    {
+      "id": "apple",
+      "name": "Apple",
+      "tier": 1,
+      "brief": "Apple's silicon team designs the M-series and A-series SoCs powering Macs, iPhones, iPads, and Vision Pro. The CPU/GPU/NPU effort is one of the most respected in-house silicon programs in the industry. Verification, SoC integration, and physical design roles are heavily recruited.",
+      "interview_style": "Apple panels go deep on fundamentals. Expect detailed questions on cache coherence, memory ordering (Apple Silicon's weak ordering vs x86 TSO comes up often), branch prediction, and OoO microarchitecture. SoC DV interviews drill on UVM, SystemVerilog, scoreboards, and protocol verification (AMBA AXI/CHI). They favor candidates who can reason about energy efficiency at the microarchitecture level — questions like 'why is M-series wide rather than deep' are real. Behavioral questions emphasize ownership and craftsmanship.",
+      "focus_areas": [
+        "Out-of-order microarchitecture (wide ROB, large rename, multi-issue)",
+        "Memory consistency (ARM weak model, acquire/release semantics)",
+        "Cache hierarchy and coherence (MESI/MOESI, 128-byte lines)",
+        "Energy efficiency (DVFS, dark silicon, E-cores vs P-cores)",
+        "SoC integration and AMBA protocols",
+        "UVM and SystemVerilog for DV roles"
+      ],
+      "roles_targeted": [
+        "SoC Full Chip DV",
+        "Design Verification Engineer",
+        "SoC Integration Engineer",
+        "CPU Design Verification",
+        "Physical Design Engineer"
+      ],
+      "reading_list": [
+        "ch3-q3",
+        "ch3-q2",
+        "ch3-q1",
+        "ch3-q4",
+        "ch3-q8",
+        "ch3-q9",
+        "ch5-q1",
+        "ch5-q3",
+        "ch5-q4",
+        "ch5-q5",
+        "ch2-q1",
+        "ch2-q2",
+        "ch2-q5",
+        "ch2-q7",
+        "appC-q3",
+        "appC-q1",
+        "ch1-q7",
+        "ch1-q8",
+        "appA-q1",
+        "appA-q2",
+        "appB-q4",
+        "appA-q5",
+        "appC-q5"
+      ]
+    },
+    {
+      "id": "nvidia",
+      "name": "NVIDIA",
+      "tier": 1,
+      "brief": "NVIDIA designs GPUs, datacenter accelerators (H100, B200), DPUs (BlueField), and CPUs (Grace). Their hardware powers most AI training globally. ASIC DV, RTL design, and SoC integration roles span GPU SM design, NVLink, memory subsystems, and Tensor Core architecture.",
+      "interview_style": "NVIDIA is rigorous on GPU-specific topics: SIMT execution, warp scheduling, memory coalescing, shared memory, Tensor Core operation. Expect to be asked to reason about a CUDA kernel's bottleneck (compute-bound vs memory-bound) and to understand the Roofline model. RTL DV interviews emphasize verification of high-throughput pipelines, AXI/NVLink protocols, and coverage closure. Strong CS fundamentals are expected: parallelism, synchronization, memory models. They hire for both NVIDIA Research-adjacent roles (hardware-applications engineering for AI customers) and core silicon teams.",
+      "focus_areas": [
+        "GPU SIMT execution model and warp scheduling",
+        "Memory coalescing and GPU memory hierarchy",
+        "Tensor Cores and matrix-multiply hardware",
+        "Roofline performance analysis",
+        "Cache coherence in heterogeneous systems",
+        "High-throughput pipeline verification"
+      ],
+      "roles_targeted": [
+        "ASIC Design Verification Engineer",
+        "Hardware Applications Engineer",
+        "GPU Architecture Engineer",
+        "RTL Design Engineer",
+        "Performance Architect"
+      ],
+      "reading_list": [
+        "ch4-q3",
+        "ch4-q4",
+        "ch4-q6",
+        "ch4-q7",
+        "ch4-q1",
+        "ch4-q2",
+        "ch5-q1",
+        "ch5-q2",
+        "ch5-q6",
+        "ch2-q1",
+        "ch2-q4",
+        "ch2-q7",
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q4",
+        "ch1-q1",
+        "ch1-q2",
+        "ch1-q8",
+        "appB-q3",
+        "appB-q4",
+        "appC-q5"
+      ]
+    },
+    {
+      "id": "amd",
+      "name": "AMD",
+      "tier": 1,
+      "brief": "AMD designs Zen-architecture x86 CPUs (Ryzen, EPYC), RDNA/CDNA GPUs (Radeon, Instinct MI300), and now leads in chiplet-based design. Their hardware spans desktop, server, and AI training (MI300X is a credible H100 alternative). Strong recruiting for RTL design, DV, and physical design at Austin and Markham sites.",
+      "interview_style": "AMD interviews are thorough on x86 microarchitecture, chiplet/Infinity Fabric topology, NUMA effects, and cache coherence (AMD uses MOESI). They probe deeply on RTL design fundamentals (clock domain crossing, reset strategy, formal verification, low-power design). Expect SystemVerilog/UVM questions for DV roles. AMD also tests systems thinking: 'how would you debug a NUMA performance regression on a dual-socket EPYC?' Behavioral questions look for technical curiosity — they favor candidates who read white papers and can talk through Zen design tradeoffs.",
+      "focus_areas": [
+        "x86-64 microarchitecture (Zen pipeline, 4-wide+ issue, ROB, retire)",
+        "Chiplet design and Infinity Fabric (CCD, CCX, IOD)",
+        "MOESI coherence and directory protocols",
+        "NUMA optimization and memory subsystem",
+        "RTL design (CDC, reset, low-power, formal)",
+        "GPU architecture (CDNA Matrix Cores, MI300)"
+      ],
+      "roles_targeted": [
+        "RTL Design Engineer",
+        "Design Verification Engineer",
+        "Physical Design Engineer",
+        "SoC Architect",
+        "Performance Modeling Engineer"
+      ],
+      "reading_list": [
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q3",
+        "ch3-q4",
+        "ch3-q5",
+        "ch3-q8",
+        "ch5-q1",
+        "ch5-q2",
+        "ch5-q6",
+        "ch5-q7",
+        "ch5-q4",
+        "ch2-q1",
+        "ch2-q2",
+        "ch2-q3",
+        "ch2-q4",
+        "ch2-q8",
+        "appA-q1",
+        "appA-q2",
+        "appC-q1",
+        "appC-q3",
+        "ch1-q2",
+        "ch1-q6",
+        "ch6-q6",
+        "ch6-q7",
+        "appB-q4",
+        "appA-q5",
+        "appC-q5"
+      ]
+    },
+    {
+      "id": "qualcomm",
+      "name": "Qualcomm",
+      "tier": 1,
+      "brief": "Qualcomm designs Snapdragon SoCs powering most Android phones, modems (5G/6G), automotive chips, and laptop chips (Snapdragon X with Oryon CPU cores). Strong on heterogeneous compute (CPU + GPU + DSP + NPU + ISP) and ultra-low-power design. Heavy recruiting for RTL, DV, and SoC roles in San Diego, Austin, and Hyderabad.",
+      "interview_style": "Qualcomm panels emphasize SoC integration, heterogeneous computing, and power efficiency (mobile SoC mindset). Expect detailed questions on AMBA protocols (AXI, ACE, CHI), clock domain crossing, low-power techniques (clock gating, power domains, retention flops), and ARM ISA specifics. DV interviews drill UVM, coverage, scoreboards, and constrained-random testing. They appreciate candidates who understand the full SoC: 'walk me through what happens when an app makes a network request.' For Hexagon DSP roles, VLIW scheduling and DSP architecture come up.",
+      "focus_areas": [
+        "ARM ISA and microarchitecture (Cortex-A, Cortex-X, Oryon)",
+        "SoC integration and AMBA (AXI, ACE, CHI)",
+        "Heterogeneous compute (CPU + GPU + DSP + NPU)",
+        "Power management (DVFS, clock gating, multiple voltage domains)",
+        "Clock domain crossing and reset strategy",
+        "UVM verification and coverage"
+      ],
+      "roles_targeted": [
+        "RTL Design Engineer",
+        "Design Verification Engineer",
+        "SoC Integration Engineer",
+        "Power Engineer",
+        "Hexagon DSP Engineer"
+      ],
+      "reading_list": [
+        "ch1-q3",
+        "ch1-q7",
+        "ch1-q8",
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q4",
+        "ch3-q5",
+        "ch2-q1",
+        "ch2-q3",
+        "ch2-q5",
+        "ch5-q1",
+        "ch5-q3",
+        "ch5-q5",
+        "appA-q1",
+        "appA-q2",
+        "appA-q3",
+        "appC-q1",
+        "appC-q3",
+        "appC-q4",
+        "ch4-q5",
+        "appB-q4",
+        "appA-q5",
+        "appC-q5"
+      ]
+    },
+    {
+      "id": "intel",
+      "name": "Intel",
+      "tier": 1,
+      "brief": "Intel designs x86 CPUs (Core, Xeon), GPUs (Arc, Gaudi), FPGAs (Altera/Agilex), and is rebuilding leadership through Intel Foundry. Largest x86 architecture team globally. Strong recruiting for RTL design, DV, validation, and physical design at Hillsboro, Austin, Bangalore, and Israel sites.",
+      "interview_style": "Intel goes deep on x86 microarchitecture (Sandy Bridge through Lunar Lake design tradeoffs come up), VT-x virtualization, and cache coherence (MESIF). They expect strong RTL fundamentals: timing closure, CDC, formal verification, low-power design. DV roles emphasize SystemVerilog, UVM, and post-silicon validation. Intel also tests breadth: pipelining, memory hierarchy, ISA design, and systems performance. Many roles expect understanding of process technology basics (Intel 18A, transistor effects). They favor candidates who can connect microarchitecture to SPEC/TPC benchmark behavior.",
+      "focus_areas": [
+        "x86-64 microarchitecture (front-end, OoO, retire)",
+        "Cache coherence (MESIF, ring/mesh interconnect)",
+        "Virtualization (VT-x, EPT, nested page tables)",
+        "AVX-512 and SIMD frequency throttling",
+        "Process technology and physical design",
+        "Post-silicon validation and debug"
+      ],
+      "roles_targeted": [
+        "RTL Design Engineer",
+        "Design Verification Engineer",
+        "Physical Design Engineer",
+        "Pre/Post Silicon Validation",
+        "SoC Architect"
+      ],
+      "reading_list": [
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q3",
+        "ch3-q4",
+        "ch3-q5",
+        "ch3-q6",
+        "ch3-q7",
+        "ch3-q8",
+        "ch2-q1",
+        "ch2-q2",
+        "ch2-q4",
+        "ch2-q5",
+        "ch2-q6",
+        "ch2-q8",
+        "ch5-q1",
+        "ch5-q2",
+        "ch5-q3",
+        "ch5-q6",
+        "ch5-q7",
+        "ch4-q5",
+        "appA-q1",
+        "appA-q2",
+        "appC-q1",
+        "appC-q3",
+        "ch6-q6",
+        "ch6-q7",
+        "appB-q4",
+        "appA-q5",
+        "appC-q5"
+      ]
+    },
+    {
+      "id": "cirrus",
+      "name": "Cirrus Logic",
+      "tier": 2,
+      "brief": "Cirrus Logic designs mixed-signal and audio ICs — the company supplies audio codecs and amplifiers used in many Apple iPhones and other premium devices. Smaller team, but highly respected. Roles span analog/mixed-signal design, digital RTL for audio DSP blocks, and emulation/verification.",
+      "interview_style": "Cirrus interviews emphasize signal processing fundamentals, low-power design, mixed-signal verification challenges, and audio DSP architecture. RTL roles drill SystemVerilog, UVM, and emulation flows (Palladium, Veloce). Expect questions on FIR/IIR filters, sample-rate conversion, and clock domain crossing in audio paths. They value candidates with strong fundamentals and willingness to work across analog/digital boundaries — different from typical big-CPU shops.",
+      "focus_areas": [
+        "Audio DSP architecture (FIR, IIR, sample-rate conversion)",
+        "Low-power design (multiple voltage domains, retention)",
+        "Mixed-signal verification",
+        "Emulation flows (Palladium, Veloce)",
+        "Clock domain crossing in audio paths",
+        "SystemVerilog and UVM"
+      ],
+      "roles_targeted": [
+        "Emulation Engineer",
+        "Digital Design Verification Engineer",
+        "RTL Design Engineer",
+        "Mixed-Signal Verification Engineer"
+      ],
+      "reading_list": [
+        "ch1-q3",
+        "ch1-q7",
+        "ch2-q1",
+        "ch2-q3",
+        "ch3-q1",
+        "ch3-q4",
+        "appC-q1",
+        "appC-q3",
+        "appB-q1",
+        "appB-q2"
+      ]
+    },
+    {
+      "id": "tenstorrent",
+      "name": "Tenstorrent",
+      "tier": 2,
+      "brief": "Tenstorrent (led by Jim Keller) designs AI accelerators (Wormhole, Blackhole) and RISC-V CPUs (Ascalon). Open and aggressive engineering culture; emphasizes RISC-V ISA, custom AI architectures (Tensix cores), and high-bandwidth networks. Hiring for ASIC design, DV, compiler, and architecture roles.",
+      "interview_style": "Tenstorrent interviews are technically intense and emphasize first-principles thinking. Expect deep questions on RISC-V ISA, AI accelerator architecture (data flow, tile-based computation, on-chip networks), and compiler-aware hardware design. DV and RTL roles drill SystemVerilog, formal verification, and high-performance pipeline design. Architecture roles expect understanding of GEMM, attention mechanisms, and how DL workloads map to silicon. They favor candidates who can debate design choices rather than recite textbook answers.",
+      "focus_areas": [
+        "RISC-V ISA and microarchitecture",
+        "AI accelerator design (matrix engines, dataflow)",
+        "On-chip networks (mesh, NoC routing)",
+        "Compiler/hardware co-design",
+        "Tensor operations and DL workload mapping",
+        "High-bandwidth memory subsystems"
+      ],
+      "roles_targeted": [
+        "ASIC Design Engineer",
+        "Physical Design Intern/Engineer",
+        "Design Verification Engineer",
+        "Architecture Engineer",
+        "Compiler Engineer"
+      ],
+      "reading_list": [
+        "ch4-q1",
+        "ch4-q3",
+        "ch4-q4",
+        "ch4-q6",
+        "ch4-q7",
+        "ch4-q2",
+        "ch3-q2",
+        "ch3-q3",
+        "ch3-q7",
+        "ch5-q1",
+        "ch5-q6",
+        "appA-q1",
+        "appA-q4",
+        "ch1-q2",
+        "ch1-q8",
+        "ch2-q1",
+        "ch2-q2"
+      ]
+    },
+    {
+      "id": "ti",
+      "name": "Texas Instruments",
+      "tier": 2,
+      "brief": "Texas Instruments designs analog and embedded processors (Sitara, C6000 DSPs, MSP430 microcontrollers), automotive chips, and motor control. The CAP (Catalyst) program recruits new graduates into digital design and verification roles. Strong on real-time and ultra-low-power design.",
+      "interview_style": "TI interviews emphasize embedded systems thinking, real-time constraints, and DSP fundamentals. Expect questions on VLIW DSP architecture (C6x family), MSP430 ultra-low-power techniques, real-time interrupts, and bus protocols (SPI, I2C, UART, CAN). Digital design roles drill SystemVerilog, FSM design, CDC, and low-power techniques. Behavioral questions assess attention to detail and willingness to ship robust, deterministic systems. Less focus on bleeding-edge OoO; more on getting fundamentals exactly right.",
+      "focus_areas": [
+        "VLIW DSP architecture (TI C6x)",
+        "Ultra-low-power design (MSP430, retention modes)",
+        "Real-time systems and interrupts",
+        "Embedded bus protocols (SPI, I2C, CAN, UART)",
+        "FSM design and CDC",
+        "Mixed-signal interface verification"
+      ],
+      "roles_targeted": [
+        "CAP Digital Design Engineer",
+        "Design Verification Engineer",
+        "Embedded Systems Engineer",
+        "Mixed-Signal Verification Engineer"
+      ],
+      "reading_list": [
+        "ch1-q2",
+        "ch1-q3",
+        "ch1-q7",
+        "ch3-q1",
+        "ch3-q7",
+        "ch2-q1",
+        "ch2-q3",
+        "appC-q1",
+        "appC-q4",
+        "appB-q1",
+        "appB-q2",
+        "appA-q1",
+        "appA-q5"
+      ]
+    },
+    {
+      "id": "google",
+      "name": "Google",
+      "tier": 3,
+      "brief": "Google designs custom silicon: TPUs (v1-v5, Trillium for AI training/inference), Tensor SoCs (Pixel phones), and YouTube transcoding chips (Argos VCU). The TPU team is one of the largest custom AI silicon programs anywhere. Strong recruiting for ASIC design, DV, performance modeling, and infrastructure-adjacent roles.",
+      "interview_style": "Google interviews combine deep hardware fundamentals with strong CS/systems knowledge. TPU team panels drill matrix-multiply hardware (MXU), systolic arrays, on-chip networks, and HBM-based memory subsystems. Expect questions on dataflow vs control flow architectures, quantization (INT8, BF16), and how DL training/inference workloads map to silicon. Software/systems questions are common too: distributed training, MapReduce, cluster management. They favor candidates who can think about both the chip and the warehouse-scale system that uses it. Strong communication and structured problem-solving are essential.",
+      "focus_areas": [
+        "Systolic arrays and matrix-multiply hardware (TPU MXU)",
+        "Datacenter / WSC design and PUE",
+        "MapReduce and distributed training",
+        "On-chip networks for AI accelerators",
+        "Quantization (INT8, BF16, FP8)",
+        "Performance modeling and Roofline analysis"
+      ],
+      "roles_targeted": [
+        "ASIC Design Engineer (TPU)",
+        "Design Verification Engineer",
+        "Performance Architect",
+        "Hardware Engineer (Pixel)",
+        "Systems Hardware Engineer"
+      ],
+      "reading_list": [
+        "ch6-q1",
+        "ch6-q2",
+        "ch6-q3",
+        "ch6-q4",
+        "ch6-q5",
+        "ch4-q1",
+        "ch4-q2",
+        "ch4-q7",
+        "ch5-q1",
+        "ch5-q4",
+        "ch5-q7",
+        "ch2-q5",
+        "ch2-q6",
+        "ch1-q5",
+        "ch1-q1",
+        "ch1-q2",
+        "ch6-q6",
+        "ch6-q7"
+      ]
+    },
+    {
+      "id": "meta",
+      "name": "Meta",
+      "tier": 3,
+      "brief": "Meta designs custom silicon (MTIA — Meta Training and Inference Accelerator) for ranking, recommendation, and AI inference at hyperscale. They also build Reality Labs custom chips for AR/VR. Strong recruiting for ASIC design, DV, performance modeling, and infrastructure roles in Menlo Park, NYC, and Burlingame.",
+      "interview_style": "Meta panels emphasize the connection between silicon and product workloads (ranking, recommendations, video). Expect questions on AI accelerator architecture, GEMM/attention hardware, on-chip memory hierarchies, and how DL workloads stress memory subsystems. Strong on systems and performance questions: 'how would you scale a 10-rack training cluster to 1000 racks?' DV roles drill SystemVerilog, UVM, and emulation. They appreciate candidates who can talk through tradeoffs in cost-per-inference and total cost of ownership.",
+      "focus_areas": [
+        "AI accelerator architecture (MTIA, MXU-style hardware)",
+        "Memory hierarchies for ML (HBM, on-chip SRAM)",
+        "Datacenter networking (fat-tree, RDMA)",
+        "Performance modeling and Roofline",
+        "Cost-per-inference optimization",
+        "AR/VR silicon (low-power, fixed-function)"
+      ],
+      "roles_targeted": [
+        "ASIC Design Engineer (MTIA)",
+        "Design Verification Engineer",
+        "Performance Architect",
+        "Reality Labs Hardware Engineer",
+        "Infrastructure Engineer"
+      ],
+      "reading_list": [
+        "ch6-q1",
+        "ch6-q2",
+        "ch6-q3",
+        "ch6-q4",
+        "ch6-q5",
+        "ch4-q1",
+        "ch4-q2",
+        "ch4-q6",
+        "ch4-q7",
+        "ch5-q1",
+        "ch5-q4",
+        "ch5-q7",
+        "ch2-q1",
+        "ch2-q5",
+        "ch1-q1",
+        "ch1-q2",
+        "ch1-q5",
+        "ch6-q6",
+        "ch6-q7",
+        "appB-q4"
+      ]
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon (AWS)",
+      "tier": 3,
+      "brief": "AWS designs custom silicon: Graviton (ARM server CPUs), Trainium (AI training), Inferentia (AI inference), and Nitro (security/virtualization). Annapurna Labs (Israel/Austin) is the silicon team. Strong on ARM-based server architecture, virtualization hardware, and cost-driven design.",
+      "interview_style": "AWS interviews emphasize cloud-scale thinking: cost-per-instance, perf-per-watt, and large-scale systems performance. Graviton-team interviews drill ARM ISA (Neoverse cores), microarchitecture, and SVE. Trainium/Inferentia teams focus on AI accelerator design, dataflow architectures, and how customers use the chips. Behavioral interviews use the famous 14 Leadership Principles — expect 4-6 LP-driven questions. Technical bar is high but accessible; they value candidates who understand the cost structure of the cloud and can reason about TCO tradeoffs.",
+      "focus_areas": [
+        "ARM Neoverse server architecture",
+        "ARM SVE / SVE2 scalable vector extensions",
+        "Virtualization hardware (Nitro, EPT/NPT)",
+        "AI accelerator architecture (Trainium dataflow)",
+        "Datacenter networking and WSC design",
+        "Cost-driven architecture and TCO analysis"
+      ],
+      "roles_targeted": [
+        "Hardware Development Engineer (Graviton, Trainium)",
+        "ASIC Design Verification Engineer",
+        "Performance Engineer",
+        "Hardware Engineer (AWS Annapurna Labs)"
+      ],
+      "reading_list": [
+        "ch6-q1",
+        "ch6-q3",
+        "ch6-q4",
+        "ch6-q5",
+        "ch2-q5",
+        "ch2-q6",
+        "ch5-q7",
+        "ch5-q1",
+        "ch5-q4",
+        "ch4-q1",
+        "ch4-q7",
+        "appA-q1",
+        "appA-q2",
+        "appA-q4",
+        "ch1-q5",
+        "ch1-q1",
+        "ch1-q2",
+        "ch6-q6",
+        "ch6-q7",
+        "appB-q4"
+      ]
+    },
+    {
+      "id": "cadence",
+      "name": "Cadence",
+      "tier": 3,
+      "brief": "Cadence (one of the 'Big 3' EDA vendors) builds tools that the entire chip industry uses: Innovus (place-and-route), Genus (synthesis), Xcelium (simulation), Palladium (emulation), Tempus (STA), Conformal (formal). Roles span software development for the tools, application engineering (supporting customers), and methodology consulting.",
+      "interview_style": "Cadence interviews emphasize EDA algorithms, ASIC flow, and customer-facing application skills. R&D interviews drill C++/algorithms, graph problems (place-and-route is a graph optimization problem), and specific tool internals. Application engineer interviews drill the full ASIC flow: synthesis, P&R, STA, DRC/LVS, formal verification. Expect questions like 'walk me through fixing a hold violation' or 'why might Innovus give different results from a competitor's tool?' They value hands-on experience with their tools and willingness to go deep into corner cases.",
+      "focus_areas": [
+        "ASIC flow (synthesis → P&R → STA → signoff)",
+        "EDA algorithms (graph problems, ILP, heuristics)",
+        "RTL-to-GDSII (PD specifically)",
+        "Static Timing Analysis (setup/hold, multi-corner)",
+        "Verification methodologies (UVM, formal)",
+        "Customer-facing technical communication"
+      ],
+      "roles_targeted": [
+        "Application Engineer",
+        "R&D Engineer",
+        "Methodology Consultant",
+        "Customer Solutions Engineer"
+      ],
+      "reading_list": [
+        "ch1-q2",
+        "ch1-q3",
+        "ch1-q6",
+        "ch1-q7",
+        "appC-q1",
+        "appC-q2",
+        "appC-q3",
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q4",
+        "ch2-q1",
+        "ch2-q4",
+        "appB-q1"
+      ]
+    },
+    {
+      "id": "synopsys",
+      "name": "Synopsys",
+      "tier": 3,
+      "brief": "Synopsys is the largest EDA vendor by revenue. Their tools — Design Compiler (synthesis), IC Compiler II (P&R), VCS (simulation), PrimeTime (STA), Formality (formal) — are used in most chip designs globally. They also sell IP (USB, PCIe, DDR controllers) and security tools (Coverity, Black Duck).",
+      "interview_style": "Synopsys interviews are similar to Cadence in scope: EDA algorithm fundamentals, full ASIC flow, and tool-specific debug. R&D roles drill C++, algorithms, and computer architecture (since architecting an EDA tool requires understanding what it's analyzing). Application engineer interviews drill flow expertise and customer scenarios. They have a reputation for technical depth — especially in DC and PrimeTime, which are used in most production tape-outs. Expect questions on synthesis QoR (quality of results), STA corners, and what causes timing closure issues.",
+      "focus_areas": [
+        "Synthesis QoR and Design Compiler",
+        "PrimeTime STA and signoff",
+        "Formal verification (Formality, VC Formal)",
+        "VCS simulation and UVM",
+        "Hardened IP (USB, PCIe, DDR PHY)",
+        "Customer-facing flow expertise"
+      ],
+      "roles_targeted": [
+        "Application Engineer",
+        "R&D Engineer",
+        "Corporate Application Engineer (CAE)",
+        "Field Application Engineer"
+      ],
+      "reading_list": [
+        "ch1-q2",
+        "ch1-q3",
+        "ch1-q6",
+        "ch1-q7",
+        "appC-q1",
+        "appC-q2",
+        "appC-q3",
+        "ch3-q1",
+        "ch3-q2",
+        "ch3-q3",
+        "ch3-q4",
+        "ch2-q1",
+        "ch2-q4",
+        "appB-q1"
+      ]
+    },
+    {
+      "id": "siemens",
+      "name": "Siemens EDA (Mentor)",
+      "tier": 3,
+      "brief": "Siemens EDA (formerly Mentor Graphics) builds Calibre (DRC/LVS, the industry standard for physical verification), Questa (simulation), Tessent (DFT and silicon lifecycle), and Veloce (emulation). Strongest in physical verification and DFT. Smaller but technically respected; many roles in DFT, formal, and verification methodology.",
+      "interview_style": "Siemens EDA interviews emphasize physical verification (DRC, LVS, ERC), DFT (scan, BIST, ATPG), and emulation flows. Calibre R&D drills C++, computational geometry (DRC is geometric), and algorithm complexity. Tessent/DFT interviews go deep on scan insertion, ATPG, JTAG/IEEE 1149.1, and post-silicon test. Application engineer roles drill the full physical verification flow. They favor candidates with strong fundamentals in IC physical design and willingness to specialize.",
+      "focus_areas": [
+        "Physical verification (DRC, LVS, ERC)",
+        "DFT (scan chains, BIST, ATPG)",
+        "Test compression and silicon lifecycle (Tessent)",
+        "Emulation flows (Veloce)",
+        "Computational geometry (for Calibre R&D)",
+        "Sign-off methodology"
+      ],
+      "roles_targeted": [
+        "Application Engineer",
+        "R&D Engineer (Calibre, Tessent)",
+        "DFT Methodology Engineer",
+        "Verification Engineer"
+      ],
+      "reading_list": [
+        "ch1-q5",
+        "ch1-q6",
+        "appC-q1",
+        "appC-q2",
+        "ch2-q1",
+        "ch2-q4",
+        "ch3-q1",
+        "ch3-q2",
+        "appB-q1"
+      ]
+    }
+  ]
+}

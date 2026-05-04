@@ -1,199 +1,50 @@
 {
   "quiz": [
-    {
-      "id": "qz-1", "chapter": "ch1",
-      "q": "If a program spends 30% of its time in a function and that function is sped up by 4×, what is the overall speedup?",
-      "choices": ["1.18×", "1.29×", "1.40×", "4.00×"],
-      "correct": 1,
-      "explain": "Amdahl's Law: Speedup = 1 / ((1-F) + F/S) = 1 / (0.7 + 0.3/4) = 1 / 0.775 ≈ 1.29×. The unaffected 70% of the program caps speedup well below the 4× of the optimized part."
-    },
-    {
-      "id": "qz-2", "chapter": "ch1",
-      "q": "Which power component scales with V² × f?",
-      "choices": ["Static (leakage) power", "Short-circuit power", "Dynamic switching power", "Total power"],
-      "correct": 2,
-      "explain": "Dynamic power = ½ × C × V² × f × α. Static power scales with V exponentially via leakage but not with frequency. This is why DVFS lowers V together with f for a cubic effect."
-    },
-    {
-      "id": "qz-3", "chapter": "ch1",
-      "q": "Why is geometric mean preferred over arithmetic mean for SPEC scores?",
-      "choices": ["It's always larger", "It's invariant to the reference machine choice", "It weights large values less", "It's required by IEEE 754"],
-      "correct": 1,
-      "explain": "Geometric mean of normalized speedups doesn't change if you renormalize against a different reference machine. Arithmetic mean would change."
-    },
-    {
-      "id": "qz-4", "chapter": "ch2",
-      "q": "Which cache miss type is most affected by going from a 32 KB to a 256 KB cache, holding everything else constant?",
-      "choices": ["Compulsory", "Capacity", "Conflict", "Coherence"],
-      "correct": 1,
-      "explain": "Larger cache directly reduces capacity misses. Compulsory misses are unaffected. Conflict misses depend on associativity. Coherence misses depend on multicore behavior."
-    },
-    {
-      "id": "qz-5", "chapter": "ch2",
-      "q": "A non-blocking cache enables which capability that's essential for OoO processors?",
-      "choices": ["Lower hit time", "Hit-under-miss and miss-under-miss", "Larger block size", "Write-through with no buffer"],
-      "correct": 1,
-      "explain": "Non-blocking means the cache can service hits while a miss is pending, and even handle multiple outstanding misses. Without this, every cache miss stalls the entire pipeline — fatal for OoO."
-    },
-    {
-      "id": "qz-6", "chapter": "ch2",
-      "q": "On a TLB miss but not a page fault, what happens?",
-      "choices": ["OS swaps a page from disk", "Hardware or software walks the page tables", "The instruction is squashed", "The CPU triple-faults"],
-      "correct": 1,
-      "explain": "TLB miss = translation not cached but page IS resident; resolved in microseconds via page-table walk. Page fault = page not in memory; resolved in milliseconds via OS handler + disk."
-    },
-    {
-      "id": "qz-7", "chapter": "ch3",
-      "q": "Which dependence is removed by register renaming?",
-      "choices": ["RAW only", "WAR only", "WAR and WAW", "All three (RAW, WAR, WAW)"],
-      "correct": 2,
-      "explain": "WAR and WAW are 'name dependences' — they exist only because the architectural register namespace is reused. Renaming gives each writer a fresh physical register. RAW is a true data dependence and cannot be eliminated."
-    },
-    {
-      "id": "qz-8", "chapter": "ch3",
-      "q": "What does the Common Data Bus (CDB) in Tomasulo's algorithm do?",
-      "choices": [
-        "Connects the cache to main memory",
-        "Broadcasts a completed result + tag to all reservation stations and registers waiting on it",
-        "Carries branch predictions to the fetch unit",
-        "Forwards values between adjacent pipeline stages"
-      ],
-      "correct": 1,
-      "explain": "The CDB is the broadcast mechanism: when a functional unit completes, it puts (tag, value) on the CDB; everyone waiting for that tag captures the value in the same cycle. The CDB's bandwidth is often a limiting factor in wide OoO machines."
-    },
-    {
-      "id": "qz-9", "chapter": "ch3",
-      "q": "What is the main job of the Reorder Buffer (ROB)?",
-      "choices": [
-        "Reorder memory accesses for better DRAM efficiency",
-        "Hold instructions in program order until commit, enabling precise exceptions",
-        "Predict branch directions",
-        "Cache recently decoded instructions"
-      ],
-      "correct": 1,
-      "explain": "The ROB lets execution be out-of-order while commit (architectural state update) is in-order. On exception, flush ROB past the faulting instruction; architectural state remains precise."
-    },
-    {
-      "id": "qz-10", "chapter": "ch3",
-      "q": "Why does branch prediction accuracy matter more in modern wide superscalar processors?",
-      "choices": [
-        "Modern compilers can't optimize branches anymore",
-        "Branches are slower instructions",
-        "Misprediction penalty grows with pipeline depth × issue width",
-        "Modern ISAs require it"
-      ],
-      "correct": 2,
-      "explain": "A 20-stage pipeline issuing 4 wide loses 80 instructions of work per misprediction. At 95% accuracy that's painful; at 90% it's catastrophic. This is why TAGE/perceptron predictors hit 97%+."
-    },
-    {
-      "id": "qz-11", "chapter": "ch4",
-      "q": "A kernel has operational intensity of 0.25 FLOPs/byte. The machine offers 100 GFLOPS peak compute and 50 GB/s memory bandwidth. What limits the kernel's performance?",
-      "choices": ["Compute", "Memory bandwidth", "Both equally", "Neither — it runs at 100 GFLOPS"],
-      "correct": 1,
-      "explain": "Roofline: bandwidth-limited performance = 50 GB/s × 0.25 FLOP/byte = 12.5 GFLOPS. That's far below the 100 GFLOPS compute roof, so memory bandwidth limits this kernel."
-    },
-    {
-      "id": "qz-12", "chapter": "ch4",
-      "q": "What happens on a warp divergence in NVIDIA's SIMT model?",
-      "choices": [
-        "The compiler generates an error",
-        "Hardware serializes both paths, masking inactive lanes",
-        "The GPU stalls until all threads converge",
-        "Threads execute on different SMs"
-      ],
-      "correct": 1,
-      "explain": "On divergence, the warp executes path A with matching lanes active, then path B with the inverse mask. Half the lanes idle in each phase, halving throughput. Newer architectures have independent thread scheduling that eases this."
-    },
-    {
-      "id": "qz-13", "chapter": "ch5",
-      "q": "Which MESI state allows a silent transition to Modified (M) without coherence broadcast?",
-      "choices": ["Shared (S)", "Exclusive (E)", "Invalid (I)", "Modified (M)"],
-      "correct": 1,
-      "explain": "From E, only this cache has the line, so writing it doesn't require invalidating anyone else — the cache silently transitions E→M. From S, the cache must broadcast Invalidate first."
-    },
-    {
-      "id": "qz-14", "chapter": "ch5",
-      "q": "Which is true of x86's TSO memory model?",
-      "choices": [
-        "All operations appear in program order",
-        "Stores can be reordered after later loads to different addresses",
-        "ARM is stricter than x86",
-        "It requires explicit fences for all multi-thread code"
-      ],
-      "correct": 1,
-      "explain": "TSO allows a load to pass an earlier store (to a different address). This is observable in Dekker-style algorithms. ARM is weaker (more reorderings allowed), not stricter."
-    },
-    {
-      "id": "qz-15", "chapter": "ch5",
-      "q": "Two threads each increment their own counter, but performance is much worse than expected. What is the most likely cause?",
-      "choices": [
-        "Branch misprediction",
-        "TLB thrashing",
-        "False sharing — counters on the same cache line",
-        "Lock contention"
-      ],
-      "correct": 2,
-      "explain": "Classic false sharing: two counters in the same 64-byte line ping-pong via the coherence protocol. Fix with cache-line padding or thread-local storage."
-    },
-    {
-      "id": "qz-16", "chapter": "ch6",
-      "q": "Which statement best captures the WSC design philosophy?",
-      "choices": [
-        "Maximize per-server reliability with redundant components inside each server",
-        "Treat failure as routine and tolerate it in software",
-        "Use only the highest-end CPUs",
-        "Avoid replication to save cost"
-      ],
-      "correct": 1,
-      "explain": "WSCs use commodity hardware and assume failures are constant; the software (frameworks, schedulers, replication) handles them. This is a fundamental shift from enterprise 'each server matters' design."
-    },
-    {
-      "id": "qz-17", "chapter": "appA",
-      "q": "Modern x86 cores translate CISC instructions into what?",
-      "choices": [
-        "ARM instructions",
-        "Internal RISC-like micro-ops executed by an OoO backend",
-        "Java bytecode",
-        "VLIW bundles"
-      ],
-      "correct": 1,
-      "explain": "x86 decode cracks complex instructions into simpler micro-ops (μops) — effectively a RISC-style backend underneath the CISC frontend. The CISC ISA acts as instruction compression."
-    },
-    {
-      "id": "qz-18", "chapter": "appB",
-      "q": "Compared to direct-mapped, an 8-way set-associative cache typically has:",
-      "choices": [
-        "Higher hit time, lower miss rate",
-        "Lower hit time, higher miss rate",
-        "Identical performance",
-        "Lower hit time and lower miss rate"
-      ],
-      "correct": 0,
-      "explain": "Set-associative needs n parallel tag comparators, increasing hit time slightly, but eliminates most conflict misses, lowering miss rate. The tradeoff is favorable for L1/L2; way prediction can recover some hit time."
-    },
-    {
-      "id": "qz-19", "chapter": "appC",
-      "q": "In the standard 5-stage MIPS pipeline with full forwarding, which instruction sequence still requires a stall?",
-      "choices": [
-        "ADD R1, R2, R3 followed by SUB R4, R1, R5",
-        "LW R1, 0(R2) followed by ADD R3, R1, R4",
-        "AND R1, R2, R3 followed by OR R4, R1, R5",
-        "All three require stalls"
-      ],
-      "correct": 1,
-      "explain": "Load-use hazard: LW's result is ready end of MEM, but the dependent ADD needs it at start of EX one cycle earlier. Forwarding can't bend time — a 1-cycle stall (or compiler-scheduled independent instruction) is required."
-    },
-    {
-      "id": "qz-20", "chapter": "appC",
-      "q": "Why are precise exceptions important?",
-      "choices": [
-        "They make floating-point math faster",
-        "Required for restartable page faults, debugging, and predictable OS behavior",
-        "Required by IEEE 754",
-        "They reduce branch misprediction penalty"
-      ],
-      "correct": 1,
-      "explain": "Without precise exceptions, you can't restart a page fault cleanly (architectural state past the fault may be inconsistent), can't single-step a debugger, and can't trap-and-emulate. ROB-based commit enables precise exceptions in OoO cores."
-    }
+    {"id":"q1","ch":"ch1","companies":["apple","nvidia","amd","intel","qualcomm"],"q":"A program spends 30% of its time in a function. You speed that function up by 5×. By Amdahl's Law, what is the overall speedup?","choices":["1.18×","1.32×","1.50×","2.00×"],"answer":0,"explain":"S = 1 / (0.7 + 0.3/5) = 1 / 0.76 = 1.316. Closest answer is 1.32×."},
+    {"id":"q2","ch":"ch1","companies":["apple","qualcomm","intel","amd","ti","cirrus"],"q":"Halving supply voltage approximately divides dynamic power by:","choices":["2","4","8","16"],"answer":2,"explain":"Dynamic power ~ V² × f. Halving V cuts V² by 4. But lower V also halves f, so total power scales as V³ — roughly an 8× reduction."},
+    {"id":"q3","ch":"ch1","companies":["intel","amd","apple","nvidia","qualcomm"],"q":"Which mean is correct for summarizing SPEC speedup ratios?","choices":["Arithmetic","Geometric","Harmonic","Median"],"answer":1,"explain":"Geometric mean is independent of the reference machine — required for normalized speedups."},
+    {"id":"q4","ch":"ch1","companies":["intel","amd","apple"],"q":"Doubling the area of a die typically:","choices":["Doubles cost per die","More than doubles cost per die","Halves cost per die","Has no effect on cost"],"answer":1,"explain":"Yield drops exponentially with defects per die, and dies-per-wafer halves. Combined effect is ~3-4× cost increase."},
+    {"id":"q5","ch":"ch1","companies":["intel","amd","apple","nvidia"],"q":"Dark silicon emerged because:","choices":["Transistors got too small to switch reliably","Voltage scaling stalled while transistor density kept doubling","Software couldn't use all the cores","Wires became more resistive than transistors"],"answer":1,"explain":"Post-2005, Dennard scaling broke: density doubled per node but per-transistor power didn't fall proportionally, so total chip power would balloon. Result: power-gate part of the chip."},
+
+    {"id":"q6","ch":"ch2","companies":["apple","intel","amd","qualcomm","nvidia"],"q":"AMAT for a system with L1 hit time 2 ns, L1 miss rate 5%, L2 hit time 10 ns, L2 miss rate 1%, memory penalty 100 ns:","choices":["2.55 ns","2.60 ns","3.05 ns","3.55 ns"],"answer":1,"explain":"AMAT = 2 + 0.05 × (10 + 0.01 × 100) = 2 + 0.05 × 11 = 2.55 ns. Closest is 2.60."},
+    {"id":"q7","ch":"ch2","companies":["apple","intel","amd","qualcomm"],"q":"Which is NOT one of the original 3 Cs of cache misses?","choices":["Compulsory","Capacity","Coherence","Conflict"],"answer":2,"explain":"Coherence is the 4th C — multicore-specific. The original 3 are compulsory, capacity, conflict."},
+    {"id":"q8","ch":"ch2","companies":["apple","amd","intel","qualcomm","ti"],"q":"Why is write-back almost always preferred for L1 caches?","choices":["It's simpler than write-through","It uses less memory bandwidth","It doesn't need a dirty bit","It supports I/O coherence better"],"answer":1,"explain":"Write-back batches writes via dirty-line eviction; write-through hits memory on every store, saturating bandwidth."},
+    {"id":"q9","ch":"ch2","companies":["intel","amd","apple","nvidia"],"q":"RRIP replacement is preferred over LRU because:","choices":["It uses less hardware than LRU","It is resistant to scan/streaming workloads that thrash LRU","It always outperforms LRU","It supports write-allocate"],"answer":1,"explain":"RRIP uses re-reference distance prediction; LRU promotes one-time-use lines and gets thrashed by databases and streaming."},
+    {"id":"q10","ch":"ch2","companies":["intel","amd","amazon","google","meta"],"q":"VT-x and AMD-V solve which classical x86 virtualization problem?","choices":["Slow context switches","Sensitive instructions that don't trap when run by guest","Lack of memory protection","Insufficient register count"],"answer":1,"explain":"Classical x86 had ~17 sensitive-but-not-privileged instructions, breaking pure virtualization. VT-x adds a non-root mode where these can be trapped."},
+
+    {"id":"q11","ch":"ch3","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"Which dependence cannot be eliminated by register renaming?","choices":["RAW","WAR","WAW","All can be eliminated"],"answer":0,"explain":"RAW is a true (flow) dependence; the consumer needs the producer's value. WAR/WAW are name dependences and disappear with renaming."},
+    {"id":"q12","ch":"ch3","companies":["apple","amd","intel","qualcomm","tenstorrent"],"q":"The Reorder Buffer enables:","choices":["Higher clock frequency","Precise exceptions and speculation rollback","Lower power consumption","More registers"],"answer":1,"explain":"ROB separates execute (out-of-order) from commit (in-order). Architectural state only updates on commit, so exceptions are precise and speculative work can be flushed cleanly."},
+    {"id":"q13","ch":"ch3","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"In a 20-stage pipeline with 95% branch prediction accuracy, the cost of mispredicts is:","choices":["Negligible — 5% is rare","About 1 stall cycle per branch","Roughly 1 wasted full-pipeline-depth per 20 branches","Mispredicts don't cost anything in OoO"],"answer":2,"explain":"95% accuracy = 1 mispredict per 20 branches; each mispredict wastes ~20 stages of work. With 4-wide issue that's ~80 instructions of wasted work."},
+    {"id":"q14","ch":"ch3","companies":["intel","amd","qualcomm"],"q":"SMT (Hyper-Threading) provides throughput gains primarily because:","choices":["Each thread gets its own ALU","Independent threads fill execution ports left idle by ILP limits","Threads communicate via shared cache","SMT cores are clocked higher"],"answer":1,"explain":"A single thread rarely uses all execution ports each cycle; SMT threads share the same OoO core and fill the gaps. ~30% throughput gain for ~5% area overhead."},
+    {"id":"q15","ch":"ch3","companies":["intel","tenstorrent","ti"],"q":"Itanium (EPIC/VLIW) failed mainly because:","choices":["Power consumption too high","Compilers couldn't find static ILP for irregular code","Cost was prohibitive","x86 ISA was patented"],"answer":1,"explain":"VLIW relies entirely on the compiler. Pointer aliasing, dynamic dispatch, and unpredictable cache misses defeated static scheduling. OoO won."},
+    {"id":"q16","ch":"ch3","companies":["apple","amd","intel","qualcomm"],"q":"A Return Address Stack (RAS) handles which type of branch?","choices":["Conditional","Unconditional direct","Returns from function calls","Indirect via register"],"answer":2,"explain":"RAS is a hardware stack pushed on CALL, popped on RET. Highly accurate for well-nested code; mispredicts on tail calls and longjmp."},
+
+    {"id":"q17","ch":"ch4","companies":["nvidia","amd","tenstorrent"],"q":"In a CUDA warp, if 16 threads take one branch and 16 take the other, the warp:","choices":["Executes both paths in parallel","Serializes both paths with masking, halving throughput","Picks the majority path","Throws an exception"],"answer":1,"explain":"Warp divergence: hardware executes path A with 16 lanes active, then path B with the inverse mask. Total time = time(A) + time(B)."},
+    {"id":"q18","ch":"ch4","companies":["nvidia","intel","amd","tenstorrent","google"],"q":"In the Roofline model, a kernel below the sloped roof is:","choices":["Compute-bound","Memory-bound","Cache-bound","Branch-bound"],"answer":1,"explain":"Sloped roof = memory bandwidth × operational intensity. Below it = limited by memory bandwidth. Need to reduce bytes per FLOP (blocking, reuse)."},
+    {"id":"q19","ch":"ch4","companies":["nvidia","amd","tenstorrent"],"q":"Memory coalescing on a GPU works best when:","choices":["Threads access random addresses","Threads in a warp access contiguous addresses within one cache line","Each thread accesses its own unique line","Loads are issued one at a time"],"answer":1,"explain":"32 threads accessing contiguous 4-byte words within one 128-byte line = 1 transaction. Random access can balloon to 32 transactions."},
+    {"id":"q20","ch":"ch4","companies":["nvidia","tenstorrent","google","apple"],"q":"Tensor Cores accelerate which workload type?","choices":["Sparse graph traversal","Dense matrix-multiply (GEMM)","Branch-heavy control flow","Pointer chasing"],"answer":1,"explain":"Tensor Cores execute MMA: D = A × B + C as a single instruction over a small tile. They target the GEMM-dominated workloads of deep learning."},
+    {"id":"q21","ch":"ch4","companies":["intel","amd","apple"],"q":"AVX-512 frequency throttling on Intel Skylake-X happens because:","choices":["AVX-512 instructions are slower","Wider SIMD draws more power per cycle, exceeding thermal envelope at peak frequency","Cache bandwidth limits SIMD","Memory subsystem can't keep up"],"answer":1,"explain":"Wider SIMD = more switching capacitance per cycle = more power. To stay in TDP, the chip drops 200-400 MHz when AVX-512 is sustained."},
+
+    {"id":"q22","ch":"ch5","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"In MESI, the Exclusive (E) state's main advantage over Shared (S) is:","choices":["Higher cache hit rate","Silent transition to Modified on a write — no bus broadcast","Faster reads","Better LRU tracking"],"answer":1,"explain":"E means 'I'm the only one with this clean copy.' On a write you can go to M without broadcasting because nobody else needs invalidation."},
+    {"id":"q23","ch":"ch5","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"Snooping coherence doesn't scale past ~16-32 cores because:","choices":["Cache lines get too small","Bandwidth scales O(N²) since every transaction must be broadcast","Latency grows exponentially","Coherence state machines run out of states"],"answer":1,"explain":"On a shared bus or ring, every transaction is seen by every cache. With N cores, traffic is N × per-core rate — bus saturates."},
+    {"id":"q24","ch":"ch5","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"On ARM (a weak memory model), implementing a lock requires:","choices":["Nothing extra — ARM is sequentially consistent","Acquire/release barriers (DMB instructions) at lock and unlock","Disabling interrupts","Avoiding shared memory"],"answer":1,"explain":"ARM allows most reorderings; explicit barriers are needed to prevent reordering across the lock boundary. C++11 acquire/release maps to DMB."},
+    {"id":"q25","ch":"ch5","companies":["apple","amd","intel","google","meta"],"q":"False sharing is fixed by:","choices":["Using larger cache lines","Padding so each thread's data lands on a separate cache line","Disabling the cache","Using locks on every variable"],"answer":1,"explain":"Pad with alignas(64) (or 128 for Apple) so writes don't share cache lines. Better still, use thread-local storage and reduce at the end."},
+    {"id":"q26","ch":"ch5","companies":["amd","intel","google","amazon"],"q":"On a NUMA system, accessing memory on another socket vs local:","choices":["Has no latency difference","Costs roughly 2× more in latency due to inter-socket traversal","Costs 100× more","Is impossible without special instructions"],"answer":1,"explain":"Typical: local ~80ns, remote ~150-200ns. Software optimizes via numactl, thread pinning, NUMA-aware allocation."},
+
+    {"id":"q27","ch":"ch6","companies":["google","amazon","meta"],"q":"PUE of 1.1 vs 2.0 indicates:","choices":["1.1 datacenter has half the compute","1.1 has 10% overhead, 2.0 has 100% overhead — 1.1 is much more efficient","2.0 is twice as fast","1.1 uses twice as much power"],"answer":1,"explain":"PUE = total facility power / IT power. 1.1 → only 10% lost to cooling/distribution; 2.0 → as much non-compute as compute power."},
+    {"id":"q28","ch":"ch6","companies":["google","amazon","meta"],"q":"Why is MapReduce well-suited to WSCs?","choices":["It's the fastest possible algorithm","Independent tasks tolerate worker failures and run on data-local nodes","It minimizes power consumption","It uses less memory"],"answer":1,"explain":"At scale, machines fail daily. MapReduce reschedules failed tasks transparently and runs Map on the node holding input data."},
+    {"id":"q29","ch":"ch6","companies":["google","amazon","meta","nvidia"],"q":"In a fat-tree (Clos) network, server-to-server communication takes:","choices":["1 hop always","2 hops always (leaf → spine → leaf)","Variable hops depending on rack location","O(log N) hops"],"answer":1,"explain":"Spine-leaf: every leaf connects to every spine. Any server-to-server is leaf → spine → leaf. Predictable latency, full bisection bandwidth."},
+    {"id":"q30","ch":"ch6","companies":["google","amazon","meta","intel","amd"],"q":"In WSC TCO over a 5-year lifecycle, dominant cost components are:","choices":["Real estate and security","Server depreciation and electricity","Networking and cooling","Software licensing"],"answer":1,"explain":"Servers are 50-60% of capex. Electricity is the dominant opex. Over 5 years, depreciated servers ≈ power costs — together ~60-70% of TCO."},
+
+    {"id":"q31","ch":"appA","companies":["intel","amd","apple"],"q":"Modern x86 cores internally:","choices":["Execute CISC instructions directly","Decode CISC into RISC-like micro-ops and execute on a RISC-style OoO backend","Compile x86 to RISC-V at boot","Use a VLIW backend"],"answer":1,"explain":"Since Pentium Pro, x86 has been a CISC ISA over a RISC-style internal core. Decoders crack each x86 instruction into 1-4 micro-ops."},
+    {"id":"q32","ch":"appA","companies":["apple","intel","amd","qualcomm"],"q":"Which addressing mode is unique to x86-64 (vs MIPS/ARM)?","choices":["PC-relative","Register indirect with offset","Base + index×scale + displacement in one instruction","Auto-increment"],"answer":2,"explain":"x86's ModR/M + SIB encoding can express base + index×scale + displacement in a single instruction. ARM has pieces of this but not all in one mode."},
+    {"id":"q33","ch":"appA","companies":["apple","intel","qualcomm","tenstorrent"],"q":"ARM SVE / RISC-V V improve over fixed-width SIMD by:","choices":["Running at higher clock","Using less power","Vector length is implementation-defined; same binary runs on different SIMD widths","Supporting more data types"],"answer":2,"explain":"Scalable vectors let the same code run efficiently on 128-bit and 2048-bit hardware without recompilation. AWS Graviton 3 (256-bit SVE), Fujitsu A64FX (512-bit SVE)."},
+
+    {"id":"q34","ch":"appB","companies":["apple","amd","intel","qualcomm","nvidia"],"q":"Why are TLBs typically fully associative?","choices":["TLBs need higher hit rates","They are small (32-128 entries), so the comparator cost is acceptable","Fully associative is faster","Required by the ISA"],"answer":1,"explain":"At ~64 entries, you can afford 64 parallel comparators. Avoids any conflict misses. Larger caches use 4-16-way set associative because comparator cost grows with size."},
+    {"id":"q35","ch":"appB","companies":["apple","amd","intel"],"q":"A 64-byte cache line size has been standard since ~2000 because:","choices":["DRAM bursts are 64 bytes","It balances spatial locality, false sharing, and DRAM burst length","It's the largest line that fits in L1","It's a power of two"],"answer":1,"explain":"Tradeoff sweet spot: large enough for good spatial locality and DRAM burst alignment, small enough to limit false sharing in multicore. Apple M-series moved to 128 bytes."},
+
+    {"id":"q36","ch":"appC","companies":["apple","amd","intel","qualcomm","ti"],"q":"In a 5-stage MIPS pipeline, the load-use hazard requires:","choices":["No stall — forwarding handles it","Exactly one stall cycle (or compiler-scheduled independent instruction)","Two stall cycles","A pipeline flush"],"answer":1,"explain":"Load result emerges end of MEM, dependent EX needs it earlier. One unavoidable stall, traditionally filled by compiler scheduling (load delay slot)."},
+    {"id":"q37","ch":"appC","companies":["apple","amd","intel","qualcomm"],"q":"Pentium 4's 31-stage NetBurst pipeline failed to outperform shorter pipelines because:","choices":["Branch mispredict cost scales with pipeline depth, and power scales superlinearly with frequency","Memory was too slow","x86 instructions don't pipeline","Pentium 4 ran at lower frequency"],"answer":0,"explain":"Deep pipelines amplify mispredict cost. Power scales as ~V²f, but pushing f required higher V. Apple M1's 8-10 stages × 8-wide × 3.2 GHz beats deeper, faster designs on per-thread integer perf."},
+    {"id":"q38","ch":"appC","companies":["apple","qualcomm","intel"],"q":"Branch delay slots were abandoned in MIPS R6 because:","choices":["They violated the ISA","They were a software-visible artifact of one specific pipeline; useless in modern OoO/deep pipelines and a porting nightmare","Compilers couldn't optimize them","They consumed too much power"],"answer":1,"explain":"In OoO cores, branch prediction fully covers what delay slots used to optimize. They became pure complication for speculation, exception handling, and binary portability. ARM and RISC-V never had them."}
   ]
 }

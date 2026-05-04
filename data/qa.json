@@ -4,235 +4,1030 @@
       {
         "id": "ch1-q1",
         "difficulty": "core",
-        "tags": ["amdahl", "performance"],
+        "tags": [
+          "amdahl",
+          "performance"
+        ],
+        "companies": [
+          "apple",
+          "nvidia",
+          "amd",
+          "qualcomm",
+          "intel",
+          "google",
+          "meta"
+        ],
         "q": "State Amdahl's Law and explain why it limits the speedup from optimizing only part of a program.",
         "a": "Speedup_overall = 1 / ((1 - F) + F/S), where F is the fraction of execution time that benefits from the enhancement and S is the speedup of that fraction. The law's key insight is that the unaffected fraction (1 - F) sets a hard ceiling on total speedup. Even with infinite speedup of the enhanced portion (S → ∞), overall speedup is capped at 1/(1 - F). Example: if you make 50% of execution 10× faster, overall speedup is only 1/(0.5 + 0.05) = 1.82×, not 10×. Architects use Amdahl's Law to prioritize the common case — optimizations on rarely-used hardware return little. This is why architects say 'make the common case fast.'"
       },
       {
         "id": "ch1-q2",
         "difficulty": "core",
-        "tags": ["performance", "iron-law"],
+        "tags": [
+          "performance",
+          "iron-law"
+        ],
+        "companies": [
+          "apple",
+          "nvidia",
+          "amd",
+          "qualcomm",
+          "intel",
+          "tenstorrent",
+          "ti"
+        ],
         "q": "Write the CPU performance equation (Iron Law) and explain what each term tells the architect.",
         "a": "CPU time = Instruction Count × CPI × Clock Cycle Time. Instruction count is set by ISA design and compiler — architects rarely move it. CPI (cycles per instruction) is the architecture's playground: pipelining, caches, branch prediction, multiple issue all attack CPI. Clock cycle time is determined by circuit design, technology node, and the longest pipeline stage. The equation is multiplicative, so a 20% improvement in any one term improves CPU time by 20%. The Iron Law also exposes tradeoffs: deeper pipelines reduce cycle time but increase CPI (more hazards, branch mispredictions). Most ISA decisions affect at least two terms simultaneously."
       },
       {
         "id": "ch1-q3",
         "difficulty": "core",
-        "tags": ["power", "energy"],
+        "tags": [
+          "power",
+          "energy"
+        ],
+        "companies": [
+          "apple",
+          "qualcomm",
+          "intel",
+          "amd",
+          "ti",
+          "cirrus"
+        ],
         "q": "Explain the difference between dynamic power, static power, and short-circuit power in a CMOS circuit. Which dominates in modern processors?",
         "a": "Dynamic power: P_dyn = ½ × C × V² × f × α, where C is switching capacitance, V is supply voltage, f is frequency, α is activity factor. This is the power burned charging and discharging gate capacitances. Static (leakage) power: current that flows even when transistors are not switching, dominated by subthreshold leakage and gate leakage. Short-circuit power: brief conduction during input transitions when both NMOS and PMOS are partially on; usually <10% of total. In older nodes (90nm+), dynamic power dominated. At sub-22nm, static power can rival dynamic power because shrinking V_t increases leakage exponentially. This is why the industry pivoted to multicore — voltage scaling stalled, so f could not keep climbing without melting chips. Modern designs aggressively use power gating, clock gating, and DVFS to manage both."
       },
       {
         "id": "ch1-q4",
         "difficulty": "core",
-        "tags": ["benchmarks", "spec"],
+        "tags": [
+          "benchmarks",
+          "spec"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "nvidia",
+          "qualcomm"
+        ],
         "q": "What are SPEC benchmarks, and why do architects prefer geometric mean to arithmetic mean when summarizing them?",
         "a": "SPEC (Standard Performance Evaluation Corporation) maintains industry-standard benchmarks like SPEC CPU (integer + floating-point), SPECpower, and SPECjbb. They use real applications run on real hardware to compare systems fairly. Architects use geometric mean because SPEC reports normalized speedups against a reference machine, and geometric mean is the only summary that is independent of the reference choice — it doesn't change if you renormalize. Arithmetic mean would be skewed by outlier benchmarks: a 100× speedup on one benchmark would dominate the average. Geometric mean treats a 2× speedup and a 0.5× slowdown as offsetting (their product is 1), which matches our intuition that a balanced design should not let any one benchmark dominate."
       },
       {
         "id": "ch1-q5",
         "difficulty": "advanced",
-        "tags": ["dependability", "availability"],
+        "tags": [
+          "dependability",
+          "availability"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta",
+          "amd",
+          "intel"
+        ],
         "q": "Define MTTF, MTTR, and availability. How do these connect for a system with redundancy?",
         "a": "MTTF (Mean Time To Failure) is the expected time until a component fails. MTTR (Mean Time To Repair) is the expected time to fix it. Availability = MTTF / (MTTF + MTTR). For a 'five nines' system (99.999%), allowable downtime is ~5 min/year. With redundancy, MTTF improves dramatically because the system tolerates individual failures: for two redundant components with independent failures, system MTTF ≈ MTTF² / (2 × MTTR). Module availability multiplies for serial systems (any failure brings down the system) but adds in parallel systems (both must fail). RAID, ECC memory, and dual power supplies are practical examples. WSCs use redundancy at every level because at scale, failures are routine — Google plans for the daily failure of disks rather than treating each as exceptional."
       },
       {
         "id": "ch1-q6",
         "difficulty": "advanced",
-        "tags": ["cost", "wafer", "yield"],
+        "tags": [
+          "cost",
+          "wafer",
+          "yield"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "nvidia",
+          "qualcomm"
+        ],
         "q": "Walk through the IC cost equation. Why do larger dies become exponentially more expensive?",
         "a": "Cost_die = Cost_wafer / (Dies_per_wafer × Yield). Dies per wafer scales roughly as wafer_area / die_area. Yield follows Bose-Einstein: Yield = (1 + (defects_per_area × die_area)/N)^(-N), where N is process complexity. The killer is the exponential in yield: doubling die area more than doubles defects per die, dropping yield sharply. For a 1 cm² die at 0.04 defects/cm², yield might be 70%; double the area to 2 cm² and yield can drop to ~50%. Combined with fewer dies per wafer, the cost per die can grow 3-4× when die area doubles. This is why architects fight to fit designs in smaller dies, why chiplets are popular (smaller dies have higher yield), and why GPUs with 600+ mm² dies are so expensive."
+      },
+      {
+        "id": "ch1-q7",
+        "difficulty": "advanced",
+        "tags": [
+          "dvfs",
+          "power-management"
+        ],
+        "companies": [
+          "apple",
+          "qualcomm",
+          "intel",
+          "amd",
+          "cirrus"
+        ],
+        "q": "Explain DVFS (Dynamic Voltage and Frequency Scaling). Why does lowering voltage have a cubic effect on power?",
+        "a": "DVFS dynamically adjusts a processor's supply voltage and clock frequency based on workload. Lower voltage saves power; lower frequency saves power but also slows execution. Mobile SoCs (Apple A-series, Qualcomm Snapdragon) and laptop CPUs use DVFS aggressively to extend battery life. The cubic effect: dynamic power scales with V² × f, but since maximum stable frequency itself scales roughly linearly with V (lower V means slower transistors), reducing V also lets you reduce f proportionally — giving V³ scaling overall. Halving V cuts power by ~8× while halving throughput. Modern implementations: Intel SpeedStep / Speed Shift, AMD Cool'n'Quiet / Precision Boost, Apple's hardware governor. DVFS is paired with race-to-idle strategies: run hot and fast briefly, then power-gate. Tradeoff: voltage transitions take microseconds, so frequent switching has overhead. Ultra-low-power chips (TI MSP430, Cirrus DSPs) use multiple voltage domains for fine-grained control."
+      },
+      {
+        "id": "ch1-q8",
+        "difficulty": "core",
+        "tags": [
+          "dark-silicon",
+          "power-wall"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "nvidia"
+        ],
+        "q": "What is 'dark silicon' and why did it emerge as a problem?",
+        "a": "Dark silicon refers to the portion of a chip that must be powered down at any given moment because the chip's thermal/power budget cannot support all transistors switching simultaneously. Emerged because Dennard scaling broke around 2005-2007: transistor count kept doubling per Moore's Law, but voltage scaling stalled near 1V (subthreshold leakage made further reduction impractical). Result: each new node packs 2× transistors but cannot cut per-transistor power proportionally, so total power would balloon. Solutions: only a fraction of transistors operate at full speed at once — the rest are 'dark' (power-gated) or 'dim' (DVFS-throttled). This drove the multicore era (specialize cores for different workloads, idle the rest), the rise of accelerators (run only the relevant block at a time), and heterogeneous architectures like Apple's E-cores + P-cores or ARM big.LITTLE. Dark silicon is also why modern chips have so many specialized engines (NPUs, video decoders, ISPs) — they sit dark most of the time but light up briefly for their dedicated workload, achieving energy efficiency that general-purpose cores cannot."
       }
     ],
     "ch2": [
       {
         "id": "ch2-q1",
         "difficulty": "core",
-        "tags": ["cache", "3cs"],
+        "tags": [
+          "cache",
+          "3cs"
+        ],
+        "companies": [
+          "apple",
+          "nvidia",
+          "amd",
+          "qualcomm",
+          "intel",
+          "tenstorrent",
+          "ti",
+          "cirrus"
+        ],
         "q": "What are the 3 Cs of cache misses? What's the 4th C, and when did it become important?",
         "a": "The 3 Cs: Compulsory (first reference to a block — unavoidable), Capacity (working set exceeds cache size), and Conflict (set associativity insufficient — multiple addresses map to same set). The 4th C is Coherence misses, which appear in multicore systems when one core invalidates another's cached copy via the coherence protocol. Coherence misses became dominant in the multicore era (mid-2000s onward) because previously, single-core systems had no coherence traffic. Diagnostic uses: increasing block size attacks compulsory misses (spatial locality) but worsens conflict misses; increasing associativity attacks conflict misses; increasing total size attacks capacity misses. False sharing is a coherence-miss pattern where two cores write different bytes in the same line and bounce the line back and forth — a classic multicore performance bug."
       },
       {
         "id": "ch2-q2",
         "difficulty": "core",
-        "tags": ["cache", "amat"],
+        "tags": [
+          "cache",
+          "amat"
+        ],
+        "companies": [
+          "apple",
+          "nvidia",
+          "amd",
+          "qualcomm",
+          "intel"
+        ],
         "q": "Write the AMAT equation and use it to explain why a multi-level cache hierarchy works.",
         "a": "AMAT = Hit_time + Miss_rate × Miss_penalty. For a multi-level hierarchy: AMAT = Hit_L1 + Miss_rate_L1 × (Hit_L2 + Miss_rate_L2 × Miss_penalty_L2). The hierarchy works because each level filters traffic to the next: L1 absorbs most accesses fast, L2 catches L1 misses with moderate latency, L3 catches the rare misses that escape L2, and DRAM only sees the residual. The L1 stays small to keep hit_time low (critical for clock frequency), L2/L3 grow larger to lower miss rates. Without a hierarchy, you'd be forced to choose: a small fast cache (lots of misses) or a large slow cache (every hit costs 20+ cycles). The hierarchy gives you both fast hits and high overall hit rate."
       },
       {
         "id": "ch2-q3",
         "difficulty": "core",
-        "tags": ["cache", "write-policy"],
+        "tags": [
+          "cache",
+          "write-policy"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "ti"
+        ],
         "q": "Compare write-through vs write-back. When would you choose each, and what is a write buffer?",
         "a": "Write-through: every write goes to both cache and lower memory. Pro: simple, always consistent, no dirty bit needed, easy for I/O coherence. Con: high memory bandwidth — every write hits the bus. Write-back: writes update cache only; the dirty block is written to memory on eviction. Pro: low bandwidth (bursts on eviction, batched writes). Con: needs dirty bit, on a miss you may have to write back the victim before fetching, complicates coherence. Real designs almost always use write-back for L1/L2 (bandwidth is precious) and write-through for very small caches or strict coherence domains. A write buffer (a.k.a. store buffer) sits between the cache and memory, holding pending writes so the CPU doesn't stall on each store. With write-merging, multiple writes to the same line coalesce. Hazard: a load that hits the buffer must check the buffer first (store-to-load forwarding), or you read stale data."
       },
       {
         "id": "ch2-q4",
         "difficulty": "advanced",
-        "tags": ["cache", "optimizations"],
+        "tags": [
+          "cache",
+          "optimizations"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "Name five of Hennessy & Patterson's ten advanced cache optimizations and what each targets.",
         "a": "(1) Small and simple L1 caches — keeps hit_time small, supports high clock. (2) Way prediction — predicts which way of a set holds the data, gets most of associative hit rate at direct-mapped speed. (3) Pipelined cache access — overlaps cache access with next-cycle work; common in modern L1s. (4) Non-blocking caches (hit-under-miss, miss-under-miss) — service hits while a miss is outstanding; essential for OoO cores. (5) Multibanked caches — multiple banks accessed in parallel for higher bandwidth; standard in L2/L3. Others include critical word first/early restart, merging write buffer, compiler prefetching, hardware prefetching, and trace caches. The 10 optimizations group into four categories: reduce hit time, reduce miss rate, reduce miss penalty, increase bandwidth."
       },
       {
         "id": "ch2-q5",
         "difficulty": "advanced",
-        "tags": ["virtual-memory", "tlb"],
+        "tags": [
+          "virtual-memory",
+          "tlb"
+        ],
+        "companies": [
+          "apple",
+          "intel",
+          "amd",
+          "qualcomm",
+          "google",
+          "amazon"
+        ],
         "q": "Explain the role of the TLB. What happens on a TLB miss vs a page fault?",
         "a": "The TLB (Translation Lookaside Buffer) is a small cache of recent virtual-to-physical page translations, typically 32-1024 entries, fully associative or highly set-associative. On a memory access, the CPU sends the virtual page number to the TLB; if it hits, the physical page is returned in 1-2 cycles and the access proceeds. On a TLB miss, the CPU walks the page tables (hardware walk on x86, software walk on MIPS) to find the translation; this is fast (tens of cycles, typically) because the page tables are usually in cache. On a page fault, the page table entry is marked invalid because the page is not in physical memory at all; the OS gets an exception, swaps in the page from disk (millions of cycles), updates the page table, and restarts the instruction. TLB miss is hardware-handled and microsecond-scale; page fault is OS-handled and millisecond-scale. Modern CPUs have multi-level TLBs (L1 ITLB/DTLB, then a unified L2 TLB) and 'huge pages' (2MB, 1GB) to reduce TLB pressure for memory-hungry workloads."
       },
       {
         "id": "ch2-q6",
         "difficulty": "advanced",
-        "tags": ["virtual-machines", "vm"],
+        "tags": [
+          "virtual-machines",
+          "vm"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "amazon",
+          "google",
+          "meta"
+        ],
         "q": "What protection issues do virtual machines solve, and how does hardware virtualization (Intel VT-x, AMD-V) help?",
         "a": "Virtual machines (VMs) provide isolation: each guest OS sees a complete machine, but the hypervisor (VMM) controls the physical hardware. Without hardware support, the VMM uses techniques like binary translation or paravirtualization to trap and emulate sensitive instructions. The classical x86 ISA had ~17 'sensitive but not privileged' instructions that did not trap when the guest ran in user mode, breaking pure virtualization (Popek-Goldberg requirements). Intel VT-x and AMD-V add a new ring (root/non-root mode) and VMCS (VM Control Structure), so the hypervisor can configure which guest events trap. Extended page tables (EPT/NPT) handle two-level address translation in hardware: guest-virtual → guest-physical → host-physical, eliminating the shadow page table software overhead. Result: near-native performance for VMs, which underpins all modern cloud computing (AWS EC2, Azure, Google Cloud)."
+      },
+      {
+        "id": "ch2-q7",
+        "difficulty": "advanced",
+        "tags": [
+          "prefetching"
+        ],
+        "companies": [
+          "apple",
+          "intel",
+          "amd",
+          "nvidia",
+          "qualcomm"
+        ],
+        "q": "Explain hardware vs software prefetching. What's a stride prefetcher?",
+        "a": "Prefetching brings data into cache before it's demanded, hiding miss latency. Hardware prefetcher: a dedicated unit observes the stream of L1/L2 misses, detects access patterns, and issues prefetch requests. Stride prefetcher: detects sequential accesses with constant stride (array traversal pattern) and prefetches the next N blocks ahead. Stream prefetcher: similar but tracks multiple concurrent streams. Modern CPUs (Intel Sandy Bridge+, AMD Zen, Apple M-series) have multiple prefetchers per cache level, often 6-8 active streams. Software prefetching: compiler or programmer inserts explicit prefetch instructions (PREFETCH on x86, PRFM on ARM) ahead of expected loads. Pro: works for irregular patterns hardware can't detect (linked lists with software pointer-chasing prefetch hints). Con: bloats code, hard to tune, can pollute cache. Tradeoffs: aggressive prefetching wastes bandwidth on unused data and can cause cache pollution; conservative prefetching misses opportunities. Modern prefetchers are tuned with feedback (track previous prefetch usefulness). Pollution is so concerning that some designs use a separate prefetch buffer rather than putting speculative data directly in L1."
+      },
+      {
+        "id": "ch2-q8",
+        "difficulty": "core",
+        "tags": [
+          "replacement",
+          "cache"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "nvidia"
+        ],
+        "q": "Compare LRU, pseudo-LRU, and RRIP cache replacement policies. Why isn't true LRU always used?",
+        "a": "True LRU (Least Recently Used) tracks the exact recency order of every line in a set. For an N-way set, true LRU needs log2(N!) bits per set — 16 bits for 4-way, but 88 bits for 16-way. The hardware comparator network is also costly. Pseudo-LRU (PLRU): tree-based approximation using N-1 bits per set. For 4-way: 3 bits forming a binary tree pointing to the LRU candidate. Cheap, performs within 2-3% of true LRU on most workloads. Used in nearly all modern L2/L3 caches. RRIP (Re-Reference Interval Prediction): each line gets a 2-bit counter representing predicted re-reference distance. New lines start at 'distant' (won't be re-referenced soon); on hit, counter promotes to 'near'. On miss, evict the line with the most distant prediction. Beats LRU on scan-resistant workloads (databases, streaming) where LRU thrashes by promoting one-time lines. Variants: SRRIP (static), DRRIP (dynamic — switches policy based on observed hit rate). Modern Intel and AMD L3 caches use RRIP variants. Apple M-series uses tuned PLRU. NVIDIA GPU L2 uses age-based policies optimized for streaming."
       }
     ],
     "ch3": [
       {
         "id": "ch3-q1",
         "difficulty": "core",
-        "tags": ["dependences", "ilp"],
+        "tags": [
+          "dependences",
+          "ilp"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia",
+          "tenstorrent"
+        ],
         "q": "Explain the three types of data dependences (RAW, WAR, WAW). Which is a 'true' dependence?",
         "a": "RAW (Read After Write): instruction j reads a value written by instruction i. Example: i: ADD R1, R2, R3; j: SUB R4, R1, R5. j needs i's result. This is a true (flow) dependence — no renaming can remove it without changing semantics. WAR (Write After Read, anti-dependence): j writes to a register read by i. Example: i: ADD R4, R1, R2; j: SUB R1, R5, R6. WAR exists only because the register name is reused; renaming R1 in j to a fresh physical register removes the dependence. WAW (Write After Write, output dependence): both i and j write the same register. Same fix as WAR — register renaming. Only RAW is fundamental; WAR and WAW are 'name dependences' that come from the limited architectural register namespace. Tomasulo's algorithm and modern OoO cores eliminate WAR/WAW via register renaming, exposing far more ILP than the original code suggested."
       },
       {
         "id": "ch3-q2",
         "difficulty": "core",
-        "tags": ["tomasulo", "ilp"],
+        "tags": [
+          "tomasulo",
+          "ilp"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia",
+          "tenstorrent"
+        ],
         "q": "Walk through Tomasulo's algorithm. What problem does it solve, and what are the three main hardware structures?",
         "a": "Tomasulo's algorithm (IBM 360/91, 1967) enables out-of-order execution with register renaming, eliminating WAR and WAW hazards and allowing instructions to execute as soon as their operands are ready. Three main structures: (1) Reservation Stations — buffer instructions waiting for operands; one set per functional unit. Each station holds the opcode, source operands (or tags pointing to producing reservation stations), and the destination tag. (2) Common Data Bus (CDB) — when a functional unit completes, it broadcasts result + tag on the CDB; all reservation stations and registers waiting on that tag snarf the value simultaneously. (3) Register Status Table — for each architectural register, holds either 'no pending writer' or 'value will come from reservation station X.' Issue stage: dispatch to reservation station, rename source operands using register status table, mark destination as pending. Execute: when all sources arrive, send to FU. Write Result: broadcast on CDB, update register file if no newer writer is pending. The algorithm naturally handles loops via continued issue and provides the foundation for all modern OoO cores."
       },
       {
         "id": "ch3-q3",
         "difficulty": "core",
-        "tags": ["rob", "speculation"],
+        "tags": [
+          "rob",
+          "speculation"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "tenstorrent"
+        ],
         "q": "What is a Reorder Buffer, and how does it enable precise exceptions in a speculative OoO processor?",
         "a": "The Reorder Buffer (ROB) is a circular buffer that holds instructions in program order from issue until commit. Tomasulo's original algorithm executed and wrote back out-of-order, making exceptions imprecise (you can't tell which instructions had completed). Adding a ROB separates 'execute and write result' from 'commit'. Instructions execute out-of-order and write results to the ROB entry, but commit (architectural state update) happens in program order from the ROB head. On an exception, the processor flushes all ROB entries past the offending instruction and squashes their effects — architectural state is exactly as if execution had stopped there. The ROB also enables speculation: branch predictions execute past unresolved branches into ROB entries; if the branch resolves wrong, those entries are flushed without ever updating architectural state. ROB sizes have grown from ~40 entries (Pentium Pro) to 350+ (modern Intel/AMD/Apple) because more in-flight instructions = more ILP exposed. Apple's M-series cores famously have very large ROBs (~600+ on M1)."
       },
       {
         "id": "ch3-q4",
         "difficulty": "core",
-        "tags": ["branch-prediction"],
+        "tags": [
+          "branch-prediction"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "Compare 1-bit, 2-bit, correlating (m,n), and tournament branch predictors. Why has accuracy mattered so much more in modern processors?",
         "a": "1-bit predictor: stores last outcome. Mispredicts twice on every loop exit (once entering, once exiting steady state). 2-bit (bimodal) predictor: 4-state saturating counter — must mispredict twice to flip prediction. Far better for loops; ~85-90% on SPEC. Correlating (m,n) predictor: uses m bits of global branch history (last m branches) to index into 2^m tables of 2-bit counters. Captures branch correlations like 'if branch A taken, branch B usually taken too.' Achieves ~95%+. Tournament predictor: combines a local predictor (per-branch history) with a global predictor (global history) and uses a meta-predictor to choose which one to trust per branch. Used in Alpha 21264. Modern processors use TAGE or perceptron predictors achieving 97-99% accuracy. Why it matters: a deeply pipelined OoO core with 100+ in-flight instructions wastes everything between the branch and resolution on a misprediction. With 20-stage pipelines and 4-wide issue, one mispredict costs 80 instructions of work. At 95% accuracy, mispredict cost is bearable; at 90%, performance collapses."
       },
       {
         "id": "ch3-q5",
         "difficulty": "advanced",
-        "tags": ["smt", "multithreading"],
+        "tags": [
+          "smt",
+          "multithreading"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "qualcomm"
+        ],
         "q": "Explain coarse-grained, fine-grained, and simultaneous multithreading. Why is SMT (Hyper-Threading) so common today?",
         "a": "Coarse-grained MT: switches threads only on a long stall (e.g., L2 miss). Pro: minimal hardware overhead. Con: short stalls (RAW hazards, branch mispredictions) waste cycles. Fine-grained MT: round-robin between threads every cycle. Pro: hides all stalls. Con: each thread runs slower because it gets only 1/N cycles; complicates branch prediction. Used in Sun UltraSPARC T1 ('Niagara'). Simultaneous Multithreading (SMT): multiple threads issue instructions in the same cycle, sharing functional units, ROB, register file. Built on top of OoO superscalar — the existing renaming and scheduling hardware already tolerates independent instruction streams; SMT just adds per-thread architectural register sets and ROB partitions. SMT is common (Intel Hyper-Threading, AMD SMT, IBM POWER 4-8 way) because it costs only ~5% area for ~25-40% throughput gain by filling functional unit gaps left by single-thread execution. Apple M-series notably skips SMT, preferring big single-threaded cores. Tradeoff: SMT can hurt performance for cache-sensitive workloads (threads compete for cache) and creates security concerns (Spectre-class side channels)."
       },
       {
         "id": "ch3-q6",
         "difficulty": "advanced",
-        "tags": ["limits-of-ilp", "speculation"],
+        "tags": [
+          "limits-of-ilp",
+          "speculation"
+        ],
+        "companies": [
+          "apple",
+          "intel",
+          "amd",
+          "nvidia"
+        ],
         "q": "What did the Hennessy & Patterson 'limits of ILP' studies find, and why does it matter for modern processor design?",
         "a": "The limits-of-ILP studies (originally from Wall, MIT, and later in CAAQA) varied window size, branch prediction accuracy, register renaming, and memory aliasing assumptions on real benchmarks to find theoretical ILP ceilings. Key findings: with a perfect predictor and unlimited window, integer programs show ~5-10 ILP, FP programs ~10-30 ILP. With realistic branch prediction (95-97%), integer ILP drops to 4-6. With realistic window sizes (~256), ILP drops further. Even with everything ideal, integer programs hit a ceiling around 10. Why this matters: it explains why processors stalled at 4-6 wide issue. Going wider doesn't help when programs simply don't have more parallelism to extract. Branch prediction and memory disambiguation are the gating factors. The industry's response: pivot from ILP to thread-level parallelism (multicore, SMT) and data-level parallelism (SIMD, GPU) — the work that ends up in Chapters 4 and 5. The studies also justify aggressive speculation: you must prefetch, predict, and execute speculatively because waiting is fatal."
+      },
+      {
+        "id": "ch3-q7",
+        "difficulty": "advanced",
+        "tags": [
+          "vliw",
+          "static-scheduling"
+        ],
+        "companies": [
+          "intel",
+          "tenstorrent",
+          "ti"
+        ],
+        "q": "What is VLIW? Why did Itanium fail commercially despite strong theoretical ILP arguments?",
+        "a": "VLIW (Very Long Instruction Word): the compiler statically schedules independent operations into wide instruction bundles (typically 3-8 ops per bundle), and the hardware issues all ops in a bundle in parallel without any dynamic dependency checking. Pro: simpler hardware (no reservation stations, no dynamic scheduling), more units for the same area, potentially higher peak throughput. Con: relies entirely on the compiler to find ILP and avoid hazards. Itanium (Intel + HP, 1994-2001) was the most ambitious VLIW (Intel called it EPIC — Explicitly Parallel Instruction Computing). Why it failed: (1) Compilers couldn't find enough static ILP — irregular control flow, pointer aliasing, and dynamic library calls defeated static scheduling. (2) Memory latency variance broke schedules — a single L2 miss stalled all bundle slots. (3) Code bloat — each bundle slot needed an op, padded with NOPs when not. (4) x86 emulation was slow, killing the migration path. (5) Predication and rotating registers added complexity without payoff. The lesson: dynamic scheduling beats static scheduling for general-purpose code with unpredictable behavior. VLIW survives only in domains where workloads are regular and predictable: DSPs (TI C6x), GPU shaders historically, and now AI accelerators (Tenstorrent uses a VLIW-like SIMD model in Tensix cores). For CPUs, OoO won decisively."
+      },
+      {
+        "id": "ch3-q8",
+        "difficulty": "advanced",
+        "tags": [
+          "memory-disambiguation",
+          "load-store-queue"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm"
+        ],
+        "q": "What is memory disambiguation, and how does the load-store queue handle it?",
+        "a": "Memory disambiguation is determining whether a load and an earlier store reference the same address — a memory RAW dependence that's only visible at execute time, not at issue time. Conservative scheme: every load waits until all earlier stores have computed their addresses. Brutal for performance — kills ILP. Aggressive scheme: speculatively execute loads ahead of stores; if a later store turns out to alias, squash and replay the load. Implementation: Load-Store Queue (LSQ) tracks all in-flight loads and stores in program order. On store address resolution, the LSQ checks all younger loads for alias; on collision, the load and dependents are squashed and re-executed. On load issue, the LSQ checks older un-resolved stores; if any store address is unknown, the design either waits or speculates. Modern cores use store sets / store-to-load forwarding predictors that learn which loads typically alias which stores, so the right ones wait and the rest speculate. Apple's M-series and modern Intel/AMD cores have LSQs of 80-130 entries. A wrong-path memory speculation is more expensive than a branch mispredict because it can corrupt cache state — speculative loads that bring in wrong data still pollute the cache."
+      },
+      {
+        "id": "ch3-q9",
+        "difficulty": "advanced",
+        "tags": [
+          "return-stack",
+          "indirect-branch"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm"
+        ],
+        "q": "How are returns and indirect branches predicted? Why are they harder than conditional branches?",
+        "a": "Conditional branches have binary outcomes (taken/not taken) and predictable correlations — branch predictors can hit 97%+ on them. Returns and indirect branches have a target address that can be any of many values, requiring predicting *where*, not just *whether* to jump. Returns: predicted by a Return Address Stack (RAS), a hardware stack of return addresses pushed on every CALL and popped on RET. Works perfectly for well-nested call patterns; mispredicts on tail calls, longjmp, or RAS overflow (typical RAS depth 16-32 entries). Indirect branches (function pointers, virtual method calls, switch tables, jump tables): predicted by Branch Target Buffer (BTB) — a cache of recent branch PC → target mappings. For polymorphic indirect branches (same call site, multiple targets — e.g., a virtual call inside a loop iterating heterogeneous objects), simple BTB fails. Modern cores use indirect target predictors with history correlation (similar to TAGE for conditionals) to disambiguate based on recent branch history. Importance: indirect branches are common in OO code (every virtual method call), interpreters (switch on opcode), and JIT-compiled code. Mispredict penalties are full pipeline depth, same as conditional branches."
       }
     ],
     "ch4": [
       {
         "id": "ch4-q1",
         "difficulty": "core",
-        "tags": ["dlp", "vector"],
+        "tags": [
+          "dlp",
+          "vector"
+        ],
+        "companies": [
+          "nvidia",
+          "intel",
+          "amd",
+          "tenstorrent",
+          "apple"
+        ],
         "q": "What is the difference between vector processors, SIMD instruction set extensions, and GPUs? What problem do they all solve?",
         "a": "All three exploit data-level parallelism (DLP) — many independent operations on different data elements. Vector processors (Cray-1, modern AVX-512 in vector mode): a single instruction operates on a vector register (e.g., 64 elements). One fetch/decode amortizes across many operations. Pipelined vector functional units run hot. Memory uses unit-stride or strided access patterns. SIMD instruction set extensions (MMX → SSE → AVX → AVX-512 on x86; NEON on ARM): packed-data registers (128/256/512 bits) with operations that act on all lanes simultaneously. Compared to vectors: shorter vectors (often 4-16 elements), no vector mask register history initially, fits into a scalar OoO pipeline. GPUs: massively parallel SIMT (Single Instruction Multiple Thread) execution. NVIDIA: 32-thread warps execute in lockstep; the GPU has thousands of lanes across many SMs. Memory hierarchy is bandwidth-optimized (HBM, GDDR). The difference vs. vector: GPUs use threads as the abstraction, with hardware warps doing the SIMD execution underneath. All three answer: 'how do I run the same computation on huge arrays without paying instruction-fetch overhead per element?'"
       },
       {
         "id": "ch4-q2",
         "difficulty": "core",
-        "tags": ["roofline", "performance"],
+        "tags": [
+          "roofline",
+          "performance"
+        ],
+        "companies": [
+          "nvidia",
+          "intel",
+          "amd",
+          "tenstorrent",
+          "google"
+        ],
         "q": "Explain the Roofline performance model. How is it used to diagnose whether a kernel is compute-bound or memory-bound?",
         "a": "Roofline model (Williams, Waterman, Patterson 2009): plots achievable performance (GFLOPS) vs operational intensity (FLOPs per byte of memory traffic) on a log-log graph. Two ceilings: a sloped line (memory bandwidth × intensity) and a flat line (peak compute throughput). The 'roof' is the lower of the two. Kernels with low operational intensity (e.g., SAXPY, dense matrix-vector multiply) sit under the slope and are memory-bound; the only way to speed them up is to reduce memory traffic (blocking, cache reuse, fewer bytes per FLOP). Kernels with high intensity (dense matrix-matrix multiply with N³ FLOPs and N² loads) are compute-bound; SIMD width and FU count matter, memory tweaks don't help. Roofline immediately tells you which optimization to attempt. The model can be extended to multiple roofs (no SIMD, no FMA, etc.) showing what each missed optimization costs you. It is the standard performance-bug diagnostic in HPC and matches the way accelerator vendors design for 'right-sized' bandwidth-to-compute ratios."
       },
       {
         "id": "ch4-q3",
         "difficulty": "advanced",
-        "tags": ["gpu", "simt"],
+        "tags": [
+          "gpu",
+          "simt"
+        ],
+        "companies": [
+          "nvidia",
+          "amd",
+          "tenstorrent"
+        ],
         "q": "Explain NVIDIA's SIMT execution model. What is a warp, and what happens on warp divergence?",
         "a": "SIMT (Single Instruction Multiple Thread) is NVIDIA's term for the GPU execution model: programmers write per-thread code, but the hardware groups 32 threads into a warp that executes one instruction in lockstep across 32 lanes. Threads in a warp share PC and instruction stream; each lane has its own registers, predicates, and memory pointers. The streaming multiprocessor (SM) issues one warp instruction per cycle (or more on later architectures), so 32 lanes do 32 work items per warp instruction — true SIMD execution under a thread-level programming model. Warp divergence: when threads in a warp take different paths at a branch (e.g., if (tid < 16) {A} else {B}), the warp can't execute both paths in lockstep. The hardware serializes: it executes A with the matching lanes active and B-lanes masked off, then executes B with the inverse mask. Total time = time(A) + time(B), and half the lanes are idle in each phase. Performance halves. Programmers structure code to keep threads in a warp on the same control path (often by restructuring data layout or using warp-aligned conditions). Newer architectures (Volta+) added independent thread scheduling within a warp, easing some divergence patterns."
+      },
+      {
+        "id": "ch4-q4",
+        "difficulty": "advanced",
+        "tags": [
+          "gpu",
+          "memory-coalescing"
+        ],
+        "companies": [
+          "nvidia",
+          "amd",
+          "tenstorrent"
+        ],
+        "q": "What is memory coalescing on a GPU, and why is it critical for performance?",
+        "a": "Memory coalescing combines memory requests from threads in a warp into the smallest number of memory transactions. When 32 threads each issue a load, the hardware groups them: if all 32 threads access contiguous 4-byte words within a single 128-byte cache line, the GPU performs one transaction instead of 32. Aligned, contiguous, sequential access → 1 transaction. Strided access (every 4th word) → 4-8 transactions. Random access → up to 32 transactions. Critical because GPU peak bandwidth assumes coalesced access patterns: NVIDIA H100 advertises ~3 TB/s, but uncoalesced access can drop effective bandwidth to <100 GB/s. Practical implications: structure-of-arrays (SoA) layout dramatically beats array-of-structures (AoS) for GPU code because SoA gives contiguous access per kernel pass. Compute kernels are usually rewritten with explicit thread-to-data mappings that produce coalesced access. Tools like NVIDIA Nsight Compute report 'memory transactions per request' as a key metric — values >1.5 indicate coalescing issues. CUDA's __ldg() (load through texture cache) and shared-memory tiling are common workarounds for irregular access patterns."
+      },
+      {
+        "id": "ch4-q5",
+        "difficulty": "advanced",
+        "tags": [
+          "simd",
+          "avx",
+          "neon"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "qualcomm"
+        ],
+        "q": "Compare AVX-512, AVX2, and ARM NEON / SVE. What's the tradeoff between SIMD width and frequency throttling?",
+        "a": "AVX2 (Intel/AMD): 256-bit registers (8 floats or 4 doubles), introduced 2013 with Haswell. AVX-512: 512-bit registers (16 floats), introduced 2016 with Skylake-X. Adds 32 registers (vs 16 in AVX2), masking, scatter/gather, more ops. ARM NEON: 128-bit SIMD, mandatory on ARMv8 (Apple M-series, Qualcomm Snapdragon, etc.). ARM SVE / SVE2: scalable vector extension with implementation-defined width (128 to 2048 bits), similar to RISC-V V — code is width-agnostic. Apple M-series uses NEON (128-bit) but issues SIMD operations across many ports, achieving high effective throughput. AVX-512 frequency throttling: wider SIMD draws more power per cycle. On Intel Skylake-X through Ice Lake, sustained AVX-512 dropped clock by 200-400 MHz; on Sapphire Rapids the throttling is reduced. Tradeoff: an AVX-512 routine running at 3.0 GHz may not beat the same routine in AVX2 at 3.5 GHz unless the workload has high SIMD utilization. Compilers became hesitant to auto-vectorize with AVX-512 because of this cost. For mobile/embedded chips, SIMD width is lower and frequency throttling minimal because TDP is already constrained. Apple's wide NEON ports + low-clock approach has proven energy-efficient enough that they skipped AVX-512-style wide SIMD entirely."
+      },
+      {
+        "id": "ch4-q6",
+        "difficulty": "advanced",
+        "tags": [
+          "gpu",
+          "memory-hierarchy"
+        ],
+        "companies": [
+          "nvidia",
+          "amd",
+          "tenstorrent"
+        ],
+        "q": "Walk through a GPU's memory hierarchy from registers down to global memory. Why is shared memory so important?",
+        "a": "GPU memory hierarchy (NVIDIA terminology): (1) Registers — per-thread, ~256 32-bit registers per thread on H100; fastest, allocated by compiler at kernel launch. (2) Shared memory / L1 — per-SM, software-controlled scratchpad (~228 KB on H100, configurable as L1 cache or shared memory). Latency ~30 cycles. Threads within a thread block share it. (3) L2 cache — chip-wide, ~50 MB on H100. Latency ~200 cycles. (4) HBM (High Bandwidth Memory) / global memory — ~80 GB on H100, ~3 TB/s bandwidth. Latency 400-800 cycles. (5) Host memory over PCIe — GB/s bandwidth, microsecond latency, only via explicit DMA. Why shared memory matters: it's the only level where threads in a block can communicate cheaply, and it's user-managed (unlike L1, where the hardware decides what's cached). Fundamental optimization: tile your computation so each block loads a tile from global memory into shared memory once, then performs many operations on the tile, amortizing the global-memory cost. Matrix multiply, stencil computations, FFT — all rely on this pattern. Without shared memory, GPU performance collapses on memory-bound kernels. Modern designs (NVIDIA H100, AMD MI300, Tenstorrent Wormhole) all expose explicit on-chip scratchpads for this reason."
+      },
+      {
+        "id": "ch4-q7",
+        "difficulty": "advanced",
+        "tags": [
+          "tensor-cores",
+          "matmul"
+        ],
+        "companies": [
+          "nvidia",
+          "tenstorrent",
+          "google",
+          "meta",
+          "apple"
+        ],
+        "q": "What are Tensor Cores (NVIDIA) and Matrix engines (other vendors)? Why did they emerge?",
+        "a": "Tensor Cores: NVIDIA's hardware blocks (introduced Volta 2017) that execute small matrix-multiply-accumulate (MMA) operations as a single instruction. A typical Tensor Core op: D = A × B + C, where A and B are small (e.g., 4×4 or 16×16) and the operation completes in a few cycles per warp. Throughput: orders of magnitude higher than scalar SIMD for matmul-heavy workloads. Why they emerged: deep learning workloads (CNN training/inference, transformers) are dominated by GEMM (general matrix multiply). A regular SIMD execution of GEMM hits register file bandwidth limits — you can't issue enough MAC operations per cycle even with full SIMD. Tensor cores solve this by reading larger operand tiles per instruction and doing the full inner product internally. Lower precision support: FP16, BF16, INT8, FP8, INT4 — formats accepted in DL because they don't need full FP32 precision. NVIDIA H100 advertises ~2000 TFLOPS FP16 with sparsity, ~50× a comparable scalar FP32 throughput. Other vendors: AMD CDNA Matrix Cores, Apple AMX (Apple Matrix coprocessor on M-series), Google TPU MXU (matrix multiply unit), Tenstorrent's Tensix uses a different architecture but addresses the same problem. The bigger trend: dedicated matmul silicon is now table-stakes for any chip targeting AI workloads."
       }
     ],
     "ch5": [
       {
         "id": "ch5-q1",
         "difficulty": "core",
-        "tags": ["coherence", "mesi"],
+        "tags": [
+          "coherence",
+          "mesi"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "Explain the MESI cache coherence protocol. What problem does each state solve?",
         "a": "MESI maintains a single coherent view of memory across multiple caches. Each cache line is in one of four states: Modified (M) — only this cache has the line, value differs from memory; cache must write back on eviction; can be read/written without bus traffic. Exclusive (E) — only this cache has the line, but it matches memory; can transition to M silently on a write (no bus broadcast needed). Shared (S) — multiple caches may hold the line, all match memory; reads are local, but writes require invalidating other copies. Invalid (I) — line is not valid in this cache. Why each matters: M enables write-back caching with coherence. E is the optimization that makes MESI better than MSI: when you load a line and no one else has it, you go to E rather than S, avoiding a broadcast on the next write. S enables sharing for read-heavy data (e.g., shared lookup tables). I is the 'don't have it' state. Bus operations: BusRd (read miss), BusRdX (read-with-intent-to-modify), Invalidate (downgrade others to I), Flush (write back to memory). Variants: MOESI adds Owned (one cache is responsible for supplying data on snoop, eliminating memory writeback for shared dirty data); MESIF adds Forward (one designated cache forwards data on snoop, used in Intel QPI)."
       },
       {
         "id": "ch5-q2",
         "difficulty": "core",
-        "tags": ["snooping", "directory"],
+        "tags": [
+          "snooping",
+          "directory"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "When would you use a snooping coherence protocol vs a directory protocol? Why don't large multicore systems use snooping?",
         "a": "Snooping: every cache observes every bus transaction and reacts to messages it cares about. Pro: simple, low-latency for small systems. Con: every transaction is broadcast — bus bandwidth is O(N) but coherence traffic is O(N²) for N cores. Doesn't scale beyond ~16-32 cores on a shared bus. Directory protocols: a directory entry per memory block tracks which caches have copies and their states. Coherence messages are point-to-point, not broadcast. Pro: scales to hundreds/thousands of cores. Con: directory storage overhead (often 1-4% of memory), extra hop latency to consult the directory. Used in: SGI Origin, modern Intel/AMD server chips with 32+ cores, AMD Zen with chiplet-based CCXs. Modern hybrid: small clusters use snooping internally (e.g., a CCX of 8 cores), and clusters interconnect via a directory protocol (e.g., AMD Infinity Fabric, Intel mesh). Snooping bus → snooping ring → mesh+directory is the historical scaling path. Directory entry encoding: full bit-vector (one bit per cache, scales linearly), limited-pointer (k pointers, broadcasts when more than k sharers), or coarse-vector (one bit per group of caches)."
       },
       {
         "id": "ch5-q3",
         "difficulty": "advanced",
-        "tags": ["consistency", "memory-models"],
+        "tags": [
+          "consistency",
+          "memory-models"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "What is the difference between sequential consistency and a relaxed memory model? Give a real-world example of where it matters.",
         "a": "Sequential consistency (SC, Lamport 1979): the result of any execution is as if memory operations from all processors were placed in some total order, with each processor's operations in program order. Intuitive but expensive: forbids most reordering, so out-of-order CPUs and write buffers must drain before subsequent operations on shared data. Relaxed memory models: weaken some orderings to enable performance, requiring programmers to insert fences/barriers where ordering is needed. TSO (Total Store Order, x86): allows store-to-load reordering (load can pass an earlier store to a different address); all other orderings preserved. Weak memory models (ARM, POWER): allow most reorderings; require explicit barriers (DMB, DSB on ARM) for ordering. Real example: implementing a lock or message queue. With SC, simple flag-based handshaking works. With weak memory models, you must use acquire/release semantics (fence after lock acquire, fence before lock release) to ensure data writes become visible before the flag. This is why C++11 introduced std::memory_order_acquire / release / seq_cst — to expose memory model choices to programmers. Java's volatile and Go's atomics have similar mechanics. A subtle bug: x86 TSO is forgiving enough that lots of bad code works; ARM exposes the bugs immediately, which is why apps targeting Apple Silicon often hit memory-model crashes that didn't manifest on x86."
       },
       {
         "id": "ch5-q4",
         "difficulty": "advanced",
-        "tags": ["false-sharing", "performance"],
+        "tags": [
+          "false-sharing",
+          "performance"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "google",
+          "meta"
+        ],
         "q": "What is false sharing, and how do you fix it?",
         "a": "False sharing: two cores write to different bytes that fall on the same cache line, causing the line to bounce back and forth via the coherence protocol even though there's no actual data dependence. The cache, which tracks coherence at line granularity (typically 64 bytes), can't tell that the writes are independent. Symptom: a multithreaded program where each thread updates its own counter or accumulator runs much slower than expected — sometimes worse than single-threaded. Diagnose with hardware performance counters (LLC misses, HITM events on Intel). Fix: pad data structures so that per-thread fields land on different cache lines. In C/C++: align with alignas(64) or pad with char _padding[64-sizeof(field)]. Better: aggregate per-thread state into thread-local structures, only combining at the end. In Java: @Contended annotation. In Go: separate fields with cache-line-sized padding fields. Modern CPUs have 64-byte lines; some architectures (Apple M-series) have 128-byte lines, so padding heuristics need updating. False sharing is one of the most common multicore performance bugs and is invisible to most profilers — you have to look for it specifically."
+      },
+      {
+        "id": "ch5-q5",
+        "difficulty": "advanced",
+        "tags": [
+          "synchronization",
+          "atomics"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "google"
+        ],
+        "q": "Compare LL/SC, CAS, and full atomic instructions. Why do RISC architectures often prefer LL/SC?",
+        "a": "Atomic primitives are the building blocks of all synchronization. Compare-and-Swap (CAS): atomic instruction takes (address, expected, new); writes new only if the current value equals expected; returns success/failure. Used in x86 (CMPXCHG) and a single instruction. Pro: simple semantics. Con: ABA problem — value changes from A to B and back to A; CAS succeeds when it shouldn't. LL/SC (Load-Linked / Store-Conditional, used in MIPS, ARM, RISC-V): two-instruction sequence. LL reads address and registers a 'reservation'; SC writes only if no other writer has touched the address since the LL. Pro: ABA-free in principle, easier to compose into more complex atomics, simpler hardware (no CAS-style atomic memory operation). Con: SC can fail spuriously (interrupt, evicted reservation), so all uses must loop. ARM moved from LL/SC (LDREX/STREX) to also offering atomic instructions (LDADD, etc.) in ARMv8.1 because LL/SC contention scales poorly. Full atomics (x86 LOCK prefix, ARMv8.1 atomic ops, RISC-V A extension): fetch-and-add, swap, etc. Pro: simpler programming, often faster on contended cases (hardware can serialize at memory controller). Con: hardware complexity. Modern designs include atomic instructions even on RISC ISAs because at scale (data centers, contended locks), atomic instructions outperform LL/SC retries. Apple M-series implements ARM's full atomic set efficiently; recent benchmarks show Apple's atomic CAS competitive with Intel's LOCK CMPXCHG."
+      },
+      {
+        "id": "ch5-q6",
+        "difficulty": "advanced",
+        "tags": [
+          "interconnect",
+          "noc"
+        ],
+        "companies": [
+          "amd",
+          "intel",
+          "apple",
+          "nvidia",
+          "tenstorrent"
+        ],
+        "q": "Compare ring, mesh, and crossbar interconnects for multicore chips. Why did Intel switch from ring to mesh?",
+        "a": "Crossbar: every node connects directly to every other; latency is 1 hop, but area scales O(N²) — limits to ~8-16 nodes. Used in small SMPs and in NVIDIA SM-internal interconnects. Ring: nodes form a circle; messages travel hop-by-hop. Latency O(N) average, hardware O(N). Used in Intel Sandy Bridge through Broadwell client chips, IBM Cell processor, AMD Bulldozer. Mesh: 2D grid of nodes connected to neighbors in 4 directions. Latency O(√N), hardware O(N). Used in Intel Skylake-X server, Tile / Tilera, Knights Landing. Why Intel switched: ring works for ~10 cores but at 18-28 cores the ring saturates and average latency grows linearly. The mesh distributes traffic across multiple paths, avoiding a single bottleneck. Tradeoff: routing logic at every mesh node adds latency per hop (~3-4 cycles), so for small chips ring is faster. The crossover is around 8-12 cores. AMD Zen uses chiplet topology: mesh-like inside CCX, then a separate Infinity Fabric for inter-CCX. Apple M-series uses a high-bandwidth 'Apple Fabric' that's effectively a wide ring or mesh, with on-chip cache acting as the unifier. NVIDIA's NVLink and AMD's Infinity Fabric are off-chip extensions of the same ideas, scaling to multi-die / multi-package coherence."
+      },
+      {
+        "id": "ch5-q7",
+        "difficulty": "core",
+        "tags": [
+          "smp",
+          "numa"
+        ],
+        "companies": [
+          "amd",
+          "intel",
+          "google",
+          "amazon",
+          "meta"
+        ],
+        "q": "Explain SMP vs NUMA. Why does NUMA exist, and how does software need to adapt?",
+        "a": "SMP (Symmetric Multiprocessing): all CPUs have uniform access time to all of memory through a shared bus or crossbar. Simple programming model — any thread can access any memory at the same cost. Scales poorly past ~8-16 sockets due to memory bandwidth contention. NUMA (Non-Uniform Memory Access): each CPU socket has its own attached DRAM; accessing remote DRAM (across the inter-socket fabric) is slower than accessing local. Modern dual-socket servers (Intel Xeon, AMD EPYC) are NUMA: local access ~80ns, remote access ~150-200ns. AMD Zen with chiplets is also internally NUMA — different CCDs have different relative latencies to each memory channel. Why NUMA exists: SMP doesn't scale memory bandwidth beyond a few sockets. NUMA scales bandwidth linearly with sockets at the cost of non-uniform latency. Software adaptation: (1) NUMA-aware allocation — allocate memory on the same socket as the thread that uses it (numactl, libnuma, automatic by Linux scheduler). (2) Thread pinning — bind threads to specific cores to keep them on the same socket as their data. (3) Avoid cross-socket sharing — replicate read-mostly data per socket. (4) Use appropriate page placement policies: 'first-touch' (page goes where first accessed), 'interleaved' (round-robin pages across sockets) for streaming workloads. Cloud orchestration: Kubernetes NUMA topology manager binds containers to NUMA nodes; AWS C7g instances expose NUMA topology to applications. Database engines (PostgreSQL, MySQL) and JVMs have NUMA-aware tuning."
       }
     ],
     "ch6": [
       {
         "id": "ch6-q1",
         "difficulty": "core",
-        "tags": ["wsc", "datacenter"],
+        "tags": [
+          "wsc",
+          "datacenter"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta",
+          "intel",
+          "amd"
+        ],
         "q": "What distinguishes a Warehouse-Scale Computer (WSC) from a traditional cluster or datacenter?",
         "a": "Hennessy & Patterson coined WSC to capture the fact that hyperscale facilities (Google, Amazon, Microsoft, Facebook) are designed as a single computer at the warehouse level, not collections of independent machines. Distinguishing characteristics: (1) Homogeneous hardware — tens of thousands of identical servers, identical storage, single network fabric, all designed together. (2) Single application owner — typically a single company runs all workloads, so no multi-tenancy isolation needed at the metal level. (3) Single administration domain — one team operates the whole facility. (4) Failure as routine — at scale (100K+ machines), several disks, NICs, power supplies fail every day; the software is built to tolerate this rather than treating each as a crisis. (5) Cost-driven design — every component is selected for $/performance, not absolute performance; the WSC is optimized as a system end-to-end including PUE (Power Usage Effectiveness), cooling, power distribution, and networking. (6) Programming model — frameworks like MapReduce, Spark, Borg/Kubernetes hide individual machine failures from the application. Result: WSCs achieve much better $/op than running the same workloads on enterprise hardware in a colo, which is why cloud computing exists economically."
       },
       {
         "id": "ch6-q2",
         "difficulty": "advanced",
-        "tags": ["mapreduce", "wsc"],
+        "tags": [
+          "mapreduce",
+          "wsc"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta"
+        ],
         "q": "Walk through MapReduce. Why is it well suited to WSCs?",
         "a": "MapReduce (Dean & Ghemawat, OSDI 2004): a programming model for distributed batch processing. Programmer writes two functions: Map(k1, v1) → list((k2, v2)) and Reduce(k2, list(v2)) → list(v3). The framework partitions input across thousands of workers, runs Map in parallel, shuffles intermediate (k2, v2) pairs to the reducers based on k2, then runs Reduce. Example: word count — Map emits (word, 1) for each word, Reduce sums counts per word. Why it suits WSCs: (1) Embarrassingly parallel — each Map and Reduce task is independent, so any worker can execute any task. (2) Failure tolerance — if a worker fails, the framework reassigns its tasks to another worker (re-executing the Map or Reduce). (3) Locality — the scheduler runs Map tasks on the node where the input data lives (HDFS replicas), minimizing network traffic. (4) Hides distributed systems pain — programmers think in terms of two functions, not RPC, partitioning, or recovery. (5) Throughput over latency — designed for batch jobs taking minutes to hours, where occasional slow workers ('stragglers') are tolerable and handled by speculative execution. Modern frameworks (Spark, Flink, Beam) descend from MapReduce, extending it with in-memory caching and DAG execution but preserving the programming-model insight. WSCs are designed around these workloads — their high inter-node bandwidth, large local storage, and scheduler-friendly architecture all support MapReduce-style computation."
+      },
+      {
+        "id": "ch6-q3",
+        "difficulty": "advanced",
+        "tags": [
+          "wsc",
+          "cost"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta"
+        ],
+        "q": "Break down the cost components of a WSC. What dominates — capex or opex?",
+        "a": "WSC TCO (Total Cost of Ownership) breaks into capex (one-time) and opex (recurring). Capex: (1) Servers — typically 50-60% of capex; thousands of identical SKUs. (2) Networking — switches, top-of-rack, spine, ~10-15%. (3) Power infrastructure — UPS, generators, switchgear, ~10-15%. (4) Cooling — chillers, CRAC units, hot aisle / cold aisle infrastructure, ~10%. (5) Building shell — concrete, security, often outsourced, ~5-10%. Opex: (1) Power — energy bill is the dominant opex, often $20-50M/yr for a large WSC. (2) Bandwidth — peering and transit costs. (3) Maintenance — replacing failed parts (disks have ~3-5% AFR — annualized failure rate). (4) Staff — relatively small per-machine; modern WSCs run with 1 admin per 1000+ servers thanks to automation. Over a 5-year lifecycle, server depreciation (capex / lifetime) and power (opex) are roughly comparable — each ~30-40% of TCO. This is why WSCs are obsessive about server efficiency (perf/watt) and PUE. Energy-efficient processors (ARM-based AWS Graviton, Apple-style efficiency cores in cloud) directly cut both capex (fewer servers needed) and opex (lower power per workload). The 'energy proportionality' metric — performance/watt across all utilization levels, not just peak — is a primary spec for WSC processors."
+      },
+      {
+        "id": "ch6-q4",
+        "difficulty": "advanced",
+        "tags": [
+          "wsc",
+          "pue",
+          "energy"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta"
+        ],
+        "q": "What is PUE, and what does a PUE of 1.1 vs 2.0 tell you about a datacenter?",
+        "a": "PUE (Power Usage Effectiveness) = Total facility power / IT equipment power. PUE of 1.0 is theoretical minimum (every watt to compute, none to overhead). Real components: cooling (chillers, fans), power distribution losses, lighting, networking switches not directly attached to servers. PUE of 2.0 (typical enterprise datacenter ~10 years ago): for every watt of compute, another watt for overhead — half the power doesn't compute anything. PUE of 1.1 (Google, Meta, modern hyperscalers): only 10% overhead, hugely more efficient. How they get there: (1) Free cooling / outside air — datacenters in cold climates (Sweden, Iceland, Oregon) use ambient air for cooling much of the year. (2) Hot aisle containment — physically isolate hot exhaust from cold supply, removing wasteful re-cooling. (3) Higher operating temperatures — running servers at 27-30°C instead of 20°C cuts cooling load enormously. (4) DC power distribution — eliminates AC/DC conversion losses. (5) Liquid cooling — direct-to-chip cooling for high-density racks (especially for GPU/AI training clusters). At a 1 GW WSC, dropping PUE from 1.5 to 1.1 saves ~$40M/year in energy. PUE has become so optimized at hyperscale that the bottleneck has shifted to server-internal efficiency (perf/watt) — which is why WSC-targeted chips (Graviton, Ampere Altra) prioritize power efficiency over peak frequency."
+      },
+      {
+        "id": "ch6-q5",
+        "difficulty": "advanced",
+        "tags": [
+          "wsc",
+          "networking",
+          "topology"
+        ],
+        "companies": [
+          "google",
+          "amazon",
+          "meta",
+          "nvidia"
+        ],
+        "q": "Why is fat-tree (Clos) topology dominant in WSC networking? What's a 'spine and leaf' design?",
+        "a": "Fat-tree / Clos topology: a multi-stage non-blocking network where each level has progressively more bandwidth aggregating up to the spine. Key property: any-to-any bisection bandwidth equals the sum of all server uplinks (no oversubscription). Spine-leaf: the modern 2-tier flavor. Each rack has a 'leaf' (top-of-rack) switch connecting all servers in that rack. Every leaf connects to every 'spine' switch. Servers communicate via leaf → spine → leaf, always 2 hops. Why this dominates WSCs: (1) Predictable latency — every server pair is the same distance. (2) High bisection bandwidth — east-west traffic (server-to-server, dominant in WSCs) doesn't bottleneck. (3) Scalability — adding capacity is mostly adding more leafs and a wider spine. (4) Cost-effective at scale — uses commodity merchant silicon switches (Broadcom Tomahawk, Mellanox/NVIDIA Spectrum) rather than custom big-iron switches. (5) ECMP (Equal-Cost Multi-Path) routing distributes traffic across many spine paths, providing both bandwidth and fault tolerance. Hyperscale networks (Google Jupiter, Meta F16) push this further with custom silicon and 5+ stages. AI training clusters (NVIDIA DGX SuperPOD, Meta Grand Teton) layer InfiniBand or NVLink switch fabrics on top with similar topology. The 'fat tree' name comes from each layer being 'fatter' (more bandwidth) than the layer below — opposite of a normal tree where the root is a bottleneck."
+      },
+      {
+        "id": "ch6-q6",
+        "difficulty": "core",
+        "tags": [
+          "warehouse",
+          "reliability",
+          "redundancy"
+        ],
+        "companies": [
+          "google",
+          "meta",
+          "amazon",
+          "amd",
+          "intel"
+        ],
+        "q": "Why do warehouse-scale computers (WSCs) treat hardware failure as the common case rather than an exception, and how does this shape software architecture?",
+        "a": "WSCs run 50,000-100,000+ servers; with even excellent per-node MTBF (e.g., 30 years), the fleet sees a failure every few hours just from arithmetic. Disk drives, DRAM (soft errors), power supplies, and network gear all fail at scale. Building rare-failure hardware (ECC everywhere, RAID, redundant PSUs) is partly worth it but cannot be the primary defense. Instead, software is designed to expect failure: replicated storage (GFS/Colossus, HDFS, Dynamo), stateless services behind load balancers, request retries with idempotency, distributed consensus (Paxos/Raft) for critical state, and chaos engineering (Netflix's Chaos Monkey) to validate resilience. The economic argument: spending one dollar making a server twice as reliable typically loses to spending the same dollar on more cheap servers and better software. This shifts the architect's job from minimizing per-node failure to maximizing system availability under failure."
+      },
+      {
+        "id": "ch6-q7",
+        "difficulty": "core",
+        "tags": [
+          "cooling",
+          "tco",
+          "power"
+        ],
+        "companies": [
+          "google",
+          "meta",
+          "amazon",
+          "intel",
+          "amd"
+        ],
+        "q": "Walk through the major cost components of running a warehouse-scale computer and explain why power dominates the discussion even when hardware capex is large.",
+        "a": "TCO splits roughly into capex (servers, networking, building, cooling plant) and opex (power, cooling, staff, maintenance, network bandwidth). Servers amortize over 3-4 years; the building over 10-15 years. Two factors make power the dominant lever: (1) electricity is paid every month for the life of the WSC, so even modest reduction compounds; (2) every watt of IT load drags an additional fraction of a watt for cooling and power conversion losses, captured in PUE (Power Usage Effectiveness) — a PUE of 1.5 means 50% overhead. State-of-the-art hyperscalers achieve PUE near 1.1 through hot-aisle/cold-aisle containment, free-air cooling in cold climates, and high-voltage DC distribution. Architecturally, this drives interest in: lower-power CPUs (ARM in cloud — Graviton, Ampere), accelerators with better perf/W (TPUs, GPUs for training), and DVFS-aware schedulers. The takeaway: optimizing perf-per-watt at the chip level translates directly into multi-year cash savings at fleet scale."
       }
     ],
     "appA": [
       {
         "id": "appA-q1",
         "difficulty": "core",
-        "tags": ["isa", "risc-cisc"],
+        "tags": [
+          "isa",
+          "risc-cisc"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "qualcomm"
+        ],
         "q": "Compare RISC and CISC ISAs. Why did RISC win, and why does x86 (CISC) still dominate desktops/servers?",
         "a": "RISC (MIPS, SPARC, ARM, RISC-V): fixed-length instructions, load-store architecture (memory only via dedicated loads/stores), few addressing modes, simple instruction semantics, large register file. Pro: easy to pipeline, easy to decode, easy to predict instruction count. CISC (x86, VAX, IBM 360): variable-length instructions, memory operands in arithmetic instructions, many addressing modes, complex instructions (REP MOVS, ENTER, LEAVE), small register file (in legacy x86). Pro: dense code, fewer instructions per task, backward compatible. Why RISC won technically: simpler decode means deeper pipelines, higher clock speeds, better branch prediction, easier OoO. Why x86 still dominates: (1) Backward compatibility with 30+ years of binaries — the largest software ecosystem in history. (2) Modern x86 cores translate CISC instructions into RISC-like micro-ops at decode, then run an OoO RISC backend underneath; the CISC ISA is effectively a compression scheme over an internal RISC core. (3) Intel and AMD have invested billions in process and microarchitecture, closing the gap. The recent shift: Apple Silicon (ARM/RISC), AWS Graviton (ARM), and rising RISC-V show that the RISC argument is winning again at the system level — but x86 is far from dead. ISA matters less than microarchitecture and ecosystem."
+      },
+      {
+        "id": "appA-q2",
+        "difficulty": "core",
+        "tags": [
+          "isa",
+          "addressing-modes"
+        ],
+        "companies": [
+          "apple",
+          "intel",
+          "amd",
+          "qualcomm"
+        ],
+        "q": "Compare the addressing modes of MIPS64, ARM64, and x86-64. Which is most expressive, and what's the tradeoff?",
+        "a": "MIPS64: register direct, register indirect with offset (lw $t0, 8($sp)), and PC-relative for branches. That's it. Simple, easy to decode in a single cycle. Trades expressiveness for simplicity. ARM64 (AArch64): register, register + immediate offset, register + register, register + extended register (sign-extend, zero-extend, scaled), pre-indexed and post-indexed (auto-increment), PC-relative literal pool. More expressive than MIPS, especially for stack and array access. Pre/post-increment is useful for compilers. x86-64: the kitchen sink. ModR/M + SIB byte encoding supports base + index×scale + displacement (e.g., [rax + rbx*4 + 0x100]) — extremely flexible, encodes array element access in a single addressing mode. Plus segment overrides, RIP-relative, indirect via memory. Most expressive of the three. Tradeoff: x86 addressing modes hide arithmetic — the decoder must crack a single load instruction into several internal micro-ops (compute address, load), which the OoO backend then handles. RISC ISAs put that arithmetic into separate instructions, increasing instruction count but simplifying decode. For modern OoO chips, both approaches converge to roughly the same internal pipeline. The choice is really about decode complexity and code density. x86 is denser; ARM/MIPS/RISC-V have simpler decoders."
+      },
+      {
+        "id": "appA-q3",
+        "difficulty": "advanced",
+        "tags": [
+          "isa",
+          "encoding"
+        ],
+        "companies": [
+          "apple",
+          "qualcomm",
+          "intel",
+          "amd"
+        ],
+        "q": "Why does ARM use 32-bit fixed-length AArch64 instructions while ARMv7 had Thumb (16-bit) interleaved? What problem did Thumb solve?",
+        "a": "ARMv7 background: original 32-bit ARM instructions are clean and orthogonal but yield ~1.5× larger code than x86 for the same workload — penalty for fixed-length encoding. For embedded systems with tiny ROM/Flash (microcontrollers, phones in 1995), this code bloat was unacceptable. Thumb (1995) and Thumb-2 (2003): a 16-bit subset / 16-bit + 32-bit mixed encoding. Most common instructions encode in 16 bits, less-common ones in 32 bits. Code shrinks ~30% with minimal performance loss. The ARM core had a hardware mode bit (ARM vs Thumb) and a special branch instruction (BX) to switch. Used heavily in Cortex-M (microcontroller) cores. AArch64 (ARMv8, 2011) abandoned Thumb: (1) Memory is cheap now; 30% code bloat doesn't matter on a phone with GB of RAM. (2) Decoding mixed 16/32-bit instructions complicates the front-end — branch target alignment, instruction cache packing, decode parallelism. (3) Fixed 32-bit encoding gave ARM more bits for new features: 31 general-purpose registers (vs 16), bigger immediates, more addressing modes, full SIMD encoding. (4) Cortex-M still uses Thumb because microcontroller code size is still cost-sensitive — but application-class chips (phones, servers, Apple M-series) all use AArch64. Lesson: as memory got cheap, the penalty for fixed-length encoding evaporated, and ISA simplicity won out."
+      },
+      {
+        "id": "appA-q4",
+        "difficulty": "advanced",
+        "tags": [
+          "isa",
+          "extensions",
+          "vector"
+        ],
+        "companies": [
+          "apple",
+          "intel",
+          "qualcomm",
+          "tenstorrent"
+        ],
+        "q": "What's the difference between fixed-width SIMD (NEON, AVX) and scalable vector extensions (ARM SVE, RISC-V V)? Why does it matter?",
+        "a": "Fixed-width SIMD (NEON, SSE, AVX, AVX-512): the instruction encodes a specific operand width — NEON is always 128-bit, AVX is 256-bit, AVX-512 is 512-bit. Code targets a specific width; compiler unrolls and tiles to fit. Adding wider SIMD requires a new ISA extension (AVX → AVX2 → AVX-512), and old code can't use the new width without recompilation. Scalable vector extensions (ARM SVE, RISC-V V, ARM SVE2): the instruction operates on vectors of implementation-defined length. Code uses vector operations and vector length predicates that work on any hardware width — same binary runs efficiently on a 128-bit, 512-bit, or 2048-bit implementation. Loop bodies use predicate masks to handle remainders cleanly, eliminating the need for unrolling and special-case epilogue code. Why it matters: (1) Future-proofing — write code once, get faster on each new chip generation without recompilation. (2) Heterogeneous fleets — cloud providers running mixed hardware can deploy a single binary. (3) Domain flexibility — embedded chips can use narrow SVE; HPC chips can use wide SVE; same source code. (4) Compiler simplicity — auto-vectorization is dramatically easier. Adoption: ARM SVE shipped in Fujitsu A64FX (used in Fugaku supercomputer, world's #1 in 2020), then AWS Graviton 3 (256-bit SVE), Apple has not adopted SVE (sticking with NEON for now). RISC-V V is shipping in cores from SiFive, Andes, and others. Long-term: scalable vectors are likely the default for new SIMD designs."
+      },
+      {
+        "id": "appA-q5",
+        "difficulty": "advanced",
+        "tags": [
+          "isa",
+          "compressed-encoding",
+          "code-density"
+        ],
+        "companies": [
+          "apple",
+          "qualcomm",
+          "arm",
+          "intel",
+          "amd",
+          "ti"
+        ],
+        "q": "Why do mobile and embedded ISAs care so much about code density, and how do compressed instruction encodings (ARM Thumb-2, RISC-V C extension) achieve it without sacrificing performance?",
+        "a": "Code density matters in mobile/embedded for three reasons: (1) flash/ROM cost — smaller code means cheaper, smaller chips; (2) i-cache footprint — denser code has higher hit rates and lower miss-driven energy; (3) instruction fetch bandwidth — fewer bytes per dynamic instruction means lower fetch power, which dominates in low-IPC embedded workloads. Compressed encodings exploit the observation that most static instructions use a small subset of registers and short immediates. ARM Thumb-2 mixes 16-bit and 32-bit instructions in the same stream, with the most common operations (add, mov, branch with small offset, load with small displacement) encodable as 16 bits. RISC-V C extension does the same: the 16-bit forms only access x8-x15 and use limited immediates, but a single bit in the opcode disambiguates 16- vs 32-bit. Performance is preserved because the decoder expands compressed instructions to their full 32-bit equivalents in the front end before they reach the execution pipeline; the execution stages are unchanged. Real-world result: 25-30% smaller code on average with no measurable IPC loss, and in cache-constrained workloads, often a small IPC gain."
       }
     ],
     "appB": [
       {
         "id": "appB-q1",
         "difficulty": "core",
-        "tags": ["cache", "associativity"],
+        "tags": [
+          "cache",
+          "associativity"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia"
+        ],
         "q": "Explain direct-mapped, set-associative, and fully-associative caches. What are the tradeoffs?",
         "a": "Direct-mapped: each memory block maps to exactly one cache line, determined by index = (address / block_size) mod num_lines. Pro: simplest, fastest hit time, no associativity comparator. Con: high conflict miss rate; two hot addresses that collide on the same set will thrash. n-way set-associative: each block can go in any of n lines within its set. Index selects the set; the n tags in the set are compared in parallel. Pro: dramatically reduces conflict misses (8-way is often within 1% of fully-associative). Con: more comparators, higher hit time, more energy per access. Fully-associative: a block can go anywhere; every line's tag is compared in parallel. Pro: no conflict misses (every miss is capacity or compulsory). Con: O(N) comparators is expensive — only practical for small caches like TLBs (32-128 entries). Real designs: L1 caches are typically 4-8 way (balance hit time vs miss rate); L2/L3 are 8-16 way; TLBs are fully associative. Replacement policy matters more in higher associativity: LRU, pseudo-LRU, or RRIP (re-reference interval prediction) all common. Modern microarchitectures use way prediction in L1 to get near-direct-mapped hit time with set-associative miss rate."
+      },
+      {
+        "id": "appB-q2",
+        "difficulty": "core",
+        "tags": [
+          "cache",
+          "block-size"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm"
+        ],
+        "q": "How does block size (cache line size) affect performance? What's the tradeoff in choosing 32 vs 64 vs 128 bytes?",
+        "a": "Block size is the granularity of data transfer between cache levels and memory. Larger blocks: (1) Exploit spatial locality better — a hot loop touching consecutive bytes gets more useful data per miss. (2) Amortize tag overhead — bigger blocks mean fewer tags per cache size. (3) Match DRAM burst length — DRAM transfers 64-128 bytes per access naturally; smaller blocks waste bandwidth. Smaller blocks: (1) Less wasted bandwidth on accesses that don't use the whole block. (2) Lower coherence traffic — false sharing hurts more on big blocks. (3) Faster fill — less time to load. Empirical sweet spot: 64 bytes for L1/L2 has been standard since ~2000 across x86, ARM, MIPS. Apple M-series uses 128 bytes — partly because their wide SIMD benefits from larger lines, partly because their L1 is larger so the per-line cost is lower. NVIDIA GPU L2 uses 128 bytes for similar bandwidth reasons. Going too large (256+) makes false sharing untenable in multicore code. Going too small (16-32) hurts bandwidth utilization. The 64-byte sweet spot has become so entrenched that programming idioms (cache-line padding for atomic counters, alignas(64)) are baked into many codebases. False sharing analysis must consider the actual line size; Apple porting issues sometimes come from C code that assumed 64-byte lines."
+      },
+      {
+        "id": "appB-q3",
+        "difficulty": "advanced",
+        "tags": [
+          "cache",
+          "write-allocate"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel"
+        ],
+        "q": "Compare write-allocate vs no-write-allocate. Why is write-allocate almost universal in modern CPUs?",
+        "a": "Write-allocate: on a write miss, fetch the block into the cache, then perform the write. Pro: subsequent writes/reads to the same line are cache hits. Aligns naturally with write-back: once the block is in the cache, multiple writes coalesce into a single eventual writeback. No-write-allocate (a.k.a. write-around): on a write miss, write directly to memory without fetching. Pro: avoids polluting cache with data that may not be re-read. Common in streaming workloads (video encode, large array writes) where written data is not re-read. Why write-allocate is almost universal: (1) Pairs naturally with write-back — write-back caches need the block in-cache to avoid bouncing. (2) Most workloads do re-read written data soon after writing (loops, accumulators). (3) Hardware prefetchers can pre-allocate write blocks ahead of need (write streaming buffers, prefetch-on-write). (4) Fetching a 64-byte line on a 1-byte write seems wasteful, but DRAM transfers full lines anyway; the cost is bandwidth, not extra work. Modern microarchitectures provide non-temporal store hints (MOVNT on x86, STNP on ARM) for streaming writes that explicitly bypass cache. Compilers and libraries (memcpy, memset) use these for bulk writes. So the default is write-allocate, with NT-store as the escape hatch. NVIDIA GPUs handle this differently — store paths can directly target L2 or memory bypassing L1, controlled by .ca / .cg / .cs / .wt cache operators on PTX store instructions."
+      },
+      {
+        "id": "appB-q4",
+        "difficulty": "core",
+        "tags": [
+          "coherence",
+          "mesi",
+          "false-sharing"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "nvidia",
+          "amazon",
+          "meta"
+        ],
+        "q": "Explain the MESI protocol states and how false sharing degrades performance even when threads access different variables.",
+        "a": "MESI is a write-invalidate cache coherence protocol with four states per cache line: Modified (dirty, exclusive — only this cache has it, memory is stale), Exclusive (clean, exclusive — only this cache has it, matches memory), Shared (clean, may exist in other caches), Invalid (no valid data). Reads/writes drive transitions: a write to a Shared line broadcasts invalidations to make it Modified; a read of an Invalid line fetches from memory or another cache (with optional cache-to-cache transfer in MOESI). False sharing occurs when two threads write to different variables that happen to live on the same cache line (typically 64 bytes). Each write invalidates the other core's copy even though the data is logically independent, causing the line to ping-pong between caches at coherence-traffic latency (tens of ns per bounce). The result: code that looks embarrassingly parallel scales worse than serial. Fixes: pad structures to cache-line boundaries (alignas(64) in C++), use per-thread local accumulators and combine at the end, or restructure data layout (struct-of-arrays vs array-of-structs)."
       }
     ],
     "appC": [
       {
         "id": "appC-q1",
         "difficulty": "core",
-        "tags": ["pipelining", "hazards"],
+        "tags": [
+          "pipelining",
+          "hazards"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm",
+          "tenstorrent",
+          "ti",
+          "cirrus"
+        ],
         "q": "Describe the 5-stage MIPS pipeline. What hazards arise and how are they handled?",
         "a": "Stages: IF (fetch), ID (decode + register read), EX (execute / address calc), MEM (memory access), WB (write back). One instruction enters per cycle; throughput is one instruction/cycle steady-state, latency is 5 cycles per instruction. Hazards: (1) Structural — two instructions need the same hardware. MIPS avoids this by separate I-cache and D-cache (Harvard architecture), and by dedicating each stage to specific hardware. Real-world structural hazard: shared FP divider when two divides issue back-to-back. (2) Data hazards — RAW dependences cause stalls when consumer enters EX before producer finishes WB. Solutions: forwarding/bypassing (route EX/MEM and MEM/WB pipeline register outputs back to EX inputs), eliminating most stalls. The remaining unavoidable case: load-use hazard — load result is available end of MEM, but a dependent instruction's EX needs it earlier; requires one stall cycle (resolved by software scheduling — the 'load delay slot'). (3) Control hazards — branches resolve in MEM (or ID with early branch resolution), but new instructions have already been fetched. Solutions: stall, predict-not-taken (squash if wrong), delayed branch (fill delay slot with useful work), branch prediction. The 5-stage pipeline is the canonical teaching example because every modern OoO processor's ALU pipe still looks like a deeper version of this with the same hazards and similar mitigations."
       },
       {
         "id": "appC-q2",
         "difficulty": "advanced",
-        "tags": ["pipelining", "exceptions"],
+        "tags": [
+          "pipelining",
+          "exceptions"
+        ],
+        "companies": [
+          "apple",
+          "amd",
+          "intel",
+          "qualcomm"
+        ],
         "q": "What's the difference between precise and imprecise exceptions, and why is precise the standard?",
         "a": "Precise exceptions: when an exception occurs at instruction i, all instructions before i have completed (architectural state updated), and no instruction at or after i has any visible effect. The PC saved is exactly i, so the OS can handle the exception and resume cleanly. Imprecise exceptions: some instructions after i have updated state (e.g., an instruction in WB committed while i in EX faulted), so architectural state is inconsistent with the exception PC. Resuming exactly is impossible without extra information. Why precise is required: (1) Page faults — must restart exactly the faulting load/store after page is brought in. (2) Debugging — single-step, breakpoint behavior must be predictable. (3) Virtual memory — paging requires precise restartable exceptions. (4) Trap-and-emulate FP — older systems trapped on FP and emulated in software. Implementation in pipelines: two main techniques. (1) Reorder buffer (used in OoO cores) — instructions execute out-of-order but commit in-order; on exception, flush ROB past the fault and use the in-order commit point. (2) Exception PC stacking with controlled stalls — for in-order pipelines, ensure later instructions don't write back before earlier ones could fault. Imprecise exceptions appeared briefly in early FP pipelines (Alpha 21164 imprecise FP) but were considered a regression; modern ISAs require precise exceptions for all exception classes."
+      },
+      {
+        "id": "appC-q3",
+        "difficulty": "advanced",
+        "tags": [
+          "pipelining",
+          "deep-pipeline"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "qualcomm"
+        ],
+        "q": "Pentium 4 had a 20-31 stage pipeline ('NetBurst'); Apple M1 has roughly 8-10 stages. Why did the deep-pipeline approach lose?",
+        "a": "Pentium 4 NetBurst (1999-2008): aggressive frequency target. Deep pipeline → short stages → high clock. Idea: 31 stages × 4 GHz beats 12 stages × 2 GHz. In practice it failed because: (1) Branch misprediction penalty scales with depth — a single mispredict costs the full pipeline. With 31 stages and 95% prediction accuracy, you waste enormous work. (2) Power scales superlinearly with frequency — pushing clock cost more than it saved. (3) Voltage scaling stalled around 2005, and you can't push frequency without proportional voltage. (4) Clock distribution overhead — flop overhead per stage grew. (5) The work-per-cycle dropped so much that wider issue would have done better. Apple M1's 8-10 stage pipeline at ~3.2 GHz beats older Intel 14+ stage pipelines at 5 GHz on per-thread integer performance. How: (1) Fewer stages means smaller branch mispredict penalty, so 95% prediction accuracy is enough. (2) Wider issue (8-wide on M1 P-core vs 4-wide on most Intel/AMD) extracts more ILP per cycle. (3) Larger ROB (~600+ entries) for more in-flight instructions. (4) Process advantage (5nm/3nm) gives them frequency without depth. The lesson: deep-pipeline + high-frequency won at one moment in semiconductor history when transistor density grew faster than power, and lost the moment Dennard scaling broke. Modern designs are wider, not deeper. AMD Zen, Apple M-series, and ARM Cortex-X follow this pattern."
+      },
+      {
+        "id": "appC-q4",
+        "difficulty": "core",
+        "tags": [
+          "pipelining",
+          "delay-slots"
+        ],
+        "companies": [
+          "apple",
+          "qualcomm",
+          "intel"
+        ],
+        "q": "What is a branch delay slot, and why did MIPS abandon it in MIPS R6 / why did ARM never adopt it?",
+        "a": "Branch delay slot: a software-visible artifact where the instruction immediately following a branch always executes regardless of branch outcome. MIPS R2000 (1985) used 1 delay slot — the compiler tries to fill it with useful work; if it can't, NOPs go there. Reason for the design: in a 5-stage pipeline, branches resolve in EX (stage 3); by then, two more instructions (IF and ID) are already in the pipeline. Original MIPS designers chose to expose this to the ISA: 'one of those is going to execute anyway, may as well let the compiler use it.' Saves a cycle on branches. Why it became a problem: (1) OoO and deep pipelines made delay slots irrelevant — branch prediction handles the cycles, and delay slots became a pure complication. (2) Speculation past delay slots requires complex squash logic. (3) Virtual memory exceptions on the delay-slot instruction are tricky to handle precisely. (4) Compilers struggle to fill them — typical fill rate is 50-70%, the rest are NOPs. (5) Inter-architecture porting becomes painful — you can't just remove delay slots from binaries. MIPS R6 (2014) deprecated delay slots. ARM never adopted them — ARM was designed in 1985 with implicit branch hints and no delay slots, and the design has aged better. RISC-V also has no delay slots. Lesson: ISAs that pre-commit to architectural artifacts of one specific implementation age badly when implementations change. Hide the pipeline; let the hardware speculate."
+      },
+      {
+        "id": "appC-q5",
+        "difficulty": "core",
+        "tags": [
+          "pipelining",
+          "bypass",
+          "forwarding"
+        ],
+        "companies": [
+          "intel",
+          "amd",
+          "apple",
+          "qualcomm",
+          "nvidia",
+          "arm"
+        ],
+        "q": "Why is operand forwarding (bypassing) essential in pipelined processors, and what hazards remain even after full forwarding is implemented?",
+        "a": "Without forwarding, a result computed in EX is not visible to dependent instructions until WB, which means consumers must stall for several cycles even when the data is electrically available a stage earlier. Forwarding paths (EX→EX, MEM→EX, sometimes WB→EX) route the freshly computed value from a producer's output register directly to a consumer's input mux, eliminating most RAW stalls. Even with full forwarding, hazards remain: (1) load-use — the data isn't ready until end of MEM, so an instruction immediately after a load still stalls one cycle, requiring either a compiler-inserted bubble or out-of-order execution to hide it; (2) long-latency instructions like multiply, divide, and FP — these take many cycles, forwarding only helps once the result emerges; (3) control hazards — branch outcomes depend on EX, so taken branches still cause front-end bubbles unless predicted; (4) structural hazards — two instructions wanting the same write port. Modern OoO designs address load-use and long-latency hazards by issuing dependent instructions later from the scheduler rather than stalling the whole pipeline."
       }
     ]
   }
